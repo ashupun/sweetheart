@@ -1,0 +1,323 @@
+@import "tailwindcss";
+
+:root {
+  /* Light theme */
+  --background: #fdf2f8;
+  --foreground: #831843;
+  --card-bg: rgba(255, 255, 255, 0.25);
+  --card-border: rgba(255, 255, 255, 0.3);
+  --input-bg: rgba(255, 255, 255, 0.5);
+
+  --pink-50: #fdf2f8;
+  --pink-100: #fce7f3;
+  --pink-200: #fbcfe8;
+  --pink-300: #f9a8d4;
+  --pink-400: #f472b6;
+  --pink-500: #ec4899;
+  --pink-600: #db2777;
+  --pink-700: #be185d;
+  --pink-800: #9d174d;
+  --pink-900: #831843;
+
+  --gradient-start: #fdf2f8;
+  --gradient-mid: #fce7f3;
+  --gradient-end: #fbcfe8;
+
+  --scrollbar-track: #fce7f3;
+  --scrollbar-thumb: #f9a8d4;
+  --scrollbar-thumb-hover: #f472b6;
+}
+
+.dark {
+  /* Dark theme */
+  --background: #1a0a14;
+  --foreground: #fce7f3;
+  --card-bg: rgba(50, 20, 35, 0.6);
+  --card-border: rgba(236, 72, 153, 0.2);
+  --input-bg: rgba(50, 20, 35, 0.8);
+
+  --pink-50: #2d1522;
+  --pink-100: #3d1f2e;
+  --pink-200: #5c2d44;
+  --pink-300: #9d4e72;
+  --pink-400: #db2777;
+  --pink-500: #ec4899;
+  --pink-600: #f472b6;
+  --pink-700: #f9a8d4;
+  --pink-800: #fbcfe8;
+  --pink-900: #fdf2f8;
+
+  --gradient-start: #1a0a14;
+  --gradient-mid: #2d1522;
+  --gradient-end: #3d1f2e;
+
+  --scrollbar-track: #2d1522;
+  --scrollbar-thumb: #9d4e72;
+  --scrollbar-thumb-hover: #db2777;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-pink-50: var(--pink-50);
+  --color-pink-100: var(--pink-100);
+  --color-pink-200: var(--pink-200);
+  --color-pink-300: var(--pink-300);
+  --color-pink-400: var(--pink-400);
+  --color-pink-500: var(--pink-500);
+  --color-pink-600: var(--pink-600);
+  --color-pink-700: var(--pink-700);
+  --color-pink-800: var(--pink-800);
+  --color-pink-900: var(--pink-900);
+  --font-sans: var(--font-poppins);
+  --font-display: var(--font-fredoka);
+}
+
+body {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-mid) 50%, var(--gradient-end) 100%);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Display font for headings */
+.font-display {
+  font-family: var(--font-display), var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Floating blob animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-30px) scale(1.05);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(244, 114, 182, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(244, 114, 182, 0.6);
+  }
+}
+
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 7s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-wiggle {
+  animation: wiggle 1s ease-in-out infinite;
+}
+
+/* Glassmorphism effect */
+.glass {
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--card-border);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #ec4899 0%, #db2777 50%, #be185d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dark .gradient-text {
+  background: linear-gradient(135deg, #f9a8d4 0%, #f472b6 50%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Button hover effects */
+.btn-primary {
+  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(219, 39, 119, 0.3);
+}
+
+.dark .btn-primary:hover {
+  box-shadow: 0 10px 30px rgba(236, 72, 153, 0.4);
+}
+
+.btn-secondary {
+  background: var(--input-bg);
+  backdrop-filter: blur(10px);
+  border: 2px solid var(--pink-300);
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--card-bg);
+  border-color: var(--pink-500);
+  transform: translateY(-2px);
+}
+
+/* Link card hover */
+.link-card {
+  transition: all 0.3s ease;
+}
+
+.link-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(219, 39, 119, 0.15);
+}
+
+.dark .link-card:hover {
+  box-shadow: 0 20px 40px rgba(236, 72, 153, 0.25);
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  position: relative;
+  width: 64px;
+  height: 32px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+  border: 2px solid #f9a8d4;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.dark .theme-toggle {
+  background: linear-gradient(135deg, #2d1522 0%, #3d1f2e 100%);
+  border-color: #9d4e72;
+}
+
+.theme-toggle-handle {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.4);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dark .theme-toggle-handle {
+  left: calc(100% - 26px);
+  background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+  box-shadow: 0 2px 8px rgba(167, 139, 250, 0.4);
+}
+
+/* Input styles for dark mode */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="url"] {
+  background: var(--input-bg);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* Dark mode text colors */
+.dark .text-pink-900 {
+  color: var(--pink-900);
+}
+
+.dark .text-pink-800 {
+  color: var(--pink-800);
+}
+
+.dark .text-pink-700 {
+  color: var(--pink-700);
+}
+
+.dark .text-pink-600 {
+  color: var(--pink-600);
+}
+
+.dark .text-pink-500 {
+  color: var(--pink-500);
+}
+
+/* Dark mode background colors */
+.dark .bg-pink-100 {
+  background-color: var(--pink-100);
+}
+
+.dark .bg-pink-50 {
+  background-color: var(--pink-50);
+}
+
+.dark .hover\:bg-pink-50:hover {
+  background-color: var(--pink-50);
+}
+
+.dark .hover\:bg-pink-100:hover {
+  background-color: var(--pink-100);
+}
+
+/* Dark mode border colors */
+.dark .border-pink-200 {
+  border-color: var(--pink-200);
+}
+
+.dark .border-pink-300 {
+  border-color: var(--pink-300);
+}
