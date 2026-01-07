@@ -170,7 +170,7 @@ export async function getLinkClicks(username: string, days = 30) {
   }
 }
 
-export async function getCountries(username: string, days = 30) {
+export async function getGeo(username: string, days = 30) {
   if (!DATABUDDY_API_KEY || !DATABUDDY_WEBSITE_ID) {
     return null;
   }
@@ -186,7 +186,7 @@ export async function getCountries(username: string, days = 30) {
         "x-api-key": DATABUDDY_API_KEY,
       },
       body: JSON.stringify({
-        type: "countries",
+        type: "geo",
         website_id: DATABUDDY_WEBSITE_ID,
         filters: {
           date_from: startDate,
@@ -206,7 +206,7 @@ export async function getCountries(username: string, days = 30) {
   }
 }
 
-export async function getReferrers(username: string, days = 30) {
+export async function getTraffic(username: string, days = 30) {
   if (!DATABUDDY_API_KEY || !DATABUDDY_WEBSITE_ID) {
     return null;
   }
@@ -222,7 +222,7 @@ export async function getReferrers(username: string, days = 30) {
         "x-api-key": DATABUDDY_API_KEY,
       },
       body: JSON.stringify({
-        type: "referrers",
+        type: "traffic",
         website_id: DATABUDDY_WEBSITE_ID,
         filters: {
           date_from: startDate,
@@ -230,6 +230,112 @@ export async function getReferrers(username: string, days = 30) {
           page: `/${username}`,
         },
         limit: 10,
+      }),
+      next: { revalidate: 300 },
+    });
+
+    if (!response.ok) return null;
+
+    return response.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function getPerformance(username: string, days = 30) {
+  if (!DATABUDDY_API_KEY || !DATABUDDY_WEBSITE_ID) {
+    return null;
+  }
+
+  const endDate = new Date().toISOString().split("T")[0];
+  const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+
+  try {
+    const response = await fetch(`${API_BASE}/query`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": DATABUDDY_API_KEY,
+      },
+      body: JSON.stringify({
+        type: "performance",
+        website_id: DATABUDDY_WEBSITE_ID,
+        filters: {
+          date_from: startDate,
+          date_to: endDate,
+          page: `/${username}`,
+        },
+      }),
+      next: { revalidate: 300 },
+    });
+
+    if (!response.ok) return null;
+
+    return response.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function getSessions(username: string, days = 30) {
+  if (!DATABUDDY_API_KEY || !DATABUDDY_WEBSITE_ID) {
+    return null;
+  }
+
+  const endDate = new Date().toISOString().split("T")[0];
+  const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+
+  try {
+    const response = await fetch(`${API_BASE}/query`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": DATABUDDY_API_KEY,
+      },
+      body: JSON.stringify({
+        type: "sessions",
+        website_id: DATABUDDY_WEBSITE_ID,
+        filters: {
+          date_from: startDate,
+          date_to: endDate,
+          page: `/${username}`,
+        },
+        limit: 50,
+      }),
+      next: { revalidate: 300 },
+    });
+
+    if (!response.ok) return null;
+
+    return response.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function getEngagement(username: string, days = 30) {
+  if (!DATABUDDY_API_KEY || !DATABUDDY_WEBSITE_ID) {
+    return null;
+  }
+
+  const endDate = new Date().toISOString().split("T")[0];
+  const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+
+  try {
+    const response = await fetch(`${API_BASE}/query`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": DATABUDDY_API_KEY,
+      },
+      body: JSON.stringify({
+        type: "engagement",
+        website_id: DATABUDDY_WEBSITE_ID,
+        filters: {
+          date_from: startDate,
+          date_to: endDate,
+          page: `/${username}`,
+        },
       }),
       next: { revalidate: 300 },
     });

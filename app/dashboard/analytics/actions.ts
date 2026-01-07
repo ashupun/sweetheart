@@ -1,6 +1,6 @@
 "use server";
 
-import { getProfileAnalytics, getLinkClicks, getCountries, getReferrers, getDevices, getBrowsers } from "@/lib/analytics";
+import { getProfileAnalytics, getLinkClicks, getGeo, getTraffic, getDevices, getBrowsers, getPerformance, getEngagement } from "@/lib/analytics";
 import { getSession } from "@/app/auth/actions";
 import { db } from "@/lib/db";
 import { profile } from "@/lib/db/schema";
@@ -15,13 +15,15 @@ export async function getUserAnalytics() {
 
   const username = userProfile[0].username;
 
-  const [profileViews, linkClicks, countries, referrers, devices, browsers] = await Promise.all([
+  const [profileViews, linkClicks, geo, traffic, devices, browsers, performance, engagement] = await Promise.all([
     getProfileAnalytics(username),
     getLinkClicks(username),
-    getCountries(username),
-    getReferrers(username),
+    getGeo(username),
+    getTraffic(username),
     getDevices(username),
     getBrowsers(username),
+    getPerformance(username),
+    getEngagement(username),
   ]);
 
   return {
@@ -30,10 +32,12 @@ export async function getUserAnalytics() {
     linkClicks: linkClicks?.data?.length || linkClicks?.total || 0,
     recentViews: profileViews?.data?.slice(0, 10) || [],
     recentClicks: linkClicks?.data?.slice(0, 10) || [],
-    countries: countries?.data || [],
-    referrers: referrers?.data || [],
+    geo: geo?.data || [],
+    traffic: traffic?.data || [],
     devices: devices?.data || [],
     browsers: browsers?.data || [],
+    performance: performance?.data || null,
+    engagement: engagement?.data || null,
   };
 }
 

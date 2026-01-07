@@ -11,12 +11,23 @@ import type { Profile, Link } from "@/lib/types";
 
 interface AnalyticsData {
   country?: string;
+  region?: string;
+  city?: string;
+  source?: string;
   referrer?: string;
   device?: string;
   browser?: string;
   views?: number;
   count?: number;
   name?: string;
+  value?: number;
+}
+
+interface PerformanceData {
+  lcp?: number;
+  fid?: number;
+  cls?: number;
+  ttfb?: number;
 }
 
 interface Analytics {
@@ -25,41 +36,44 @@ interface Analytics {
   linkClicks: number;
   recentViews: Array<{ timestamp: string; properties?: Record<string, string> }>;
   recentClicks: Array<{ timestamp: string; properties?: Record<string, string> }>;
-  countries: AnalyticsData[];
-  referrers: AnalyticsData[];
+  geo: AnalyticsData[];
+  traffic: AnalyticsData[];
   devices: AnalyticsData[];
   browsers: AnalyticsData[];
+  performance: PerformanceData | null;
+  engagement: AnalyticsData | null;
 }
 
 const countryFlags: Record<string, string> = {
-  "United States": "🇺🇸",
-  "United Kingdom": "🇬🇧",
-  "Canada": "🇨🇦",
-  "Australia": "🇦🇺",
-  "Germany": "🇩🇪",
-  "France": "🇫🇷",
-  "Japan": "🇯🇵",
-  "Brazil": "🇧🇷",
-  "India": "🇮🇳",
-  "Netherlands": "🇳🇱",
-  "Spain": "🇪🇸",
-  "Italy": "🇮🇹",
-  "Mexico": "🇲🇽",
-  "South Korea": "🇰🇷",
-  "Sweden": "🇸🇪",
-  "Poland": "🇵🇱",
-  "Ireland": "🇮🇪",
-  "Singapore": "🇸🇬",
+  "US": "🇺🇸", "United States": "🇺🇸",
+  "GB": "🇬🇧", "United Kingdom": "🇬🇧",
+  "CA": "🇨🇦", "Canada": "🇨🇦",
+  "AU": "🇦🇺", "Australia": "🇦🇺",
+  "DE": "🇩🇪", "Germany": "🇩🇪",
+  "FR": "🇫🇷", "France": "🇫🇷",
+  "JP": "🇯🇵", "Japan": "🇯🇵",
+  "BR": "🇧🇷", "Brazil": "🇧🇷",
+  "IN": "🇮🇳", "India": "🇮🇳",
+  "NL": "🇳🇱", "Netherlands": "🇳🇱",
+  "ES": "🇪🇸", "Spain": "🇪🇸",
+  "IT": "🇮🇹", "Italy": "🇮🇹",
+  "MX": "🇲🇽", "Mexico": "🇲🇽",
+  "KR": "🇰🇷", "South Korea": "🇰🇷",
+  "SE": "🇸🇪", "Sweden": "🇸🇪",
+  "PL": "🇵🇱", "Poland": "🇵🇱",
+  "IE": "🇮🇪", "Ireland": "🇮🇪",
+  "SG": "🇸🇬", "Singapore": "🇸🇬",
   "Unknown": "🌍",
 };
 
-function StatCard({ value, label, accent }: { value: number | string; label: string; accent?: boolean }) {
+function StatCard({ value, label, accent, subtitle }: { value: number | string; label: string; accent?: boolean; subtitle?: string }) {
   return (
     <div className="py-4 border-b border-gray-200 dark:border-gray-800">
       <p className={`text-3xl font-bold ${accent ? "text-pink-500" : "text-[#1a1a1a] dark:text-white"}`}>
         {value}
       </p>
       <p className="text-xs text-gray-400 mt-1">{label}</p>
+      {subtitle && <p className="text-[10px] text-gray-300 dark:text-gray-600">{subtitle}</p>}
     </div>
   );
 }
@@ -95,12 +109,29 @@ function DataList({ title, items, emptyText }: { title: string; items: { name: s
   );
 }
 
+function PerformanceCard({ label, value, unit, good, bad }: { label: string; value: number | undefined; unit: string; good: number; bad: number }) {
+  if (value === undefined) return null;
+  
+  const status = value <= good ? "good" : value <= bad ? "needs improvement" : "poor";
+  const statusColor = status === "good" ? "text-green-500" : status === "needs improvement" ? "text-yellow-500" : "text-red-500";
+  
+  return (
+    <div className="py-3 border-b border-gray-200 dark:border-gray-800">
+      <div className="flex items-center justify-between">
+        <span className="text-sm text-gray-500">{label}</span>
+        <span className="text-sm text-[#1a1a1a] dark:text-white font-medium">{value.toFixed(2)}{unit}</span>
+      </div>
+      <span className={`text-[10px] ${statusColor}`}>{status}</span>
+    </div>
+  );
+}
+
 export default function AnalyticsPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [links, setLinks] = useState<Link[]>([]);
   const [analytics, setAnalytics] = useState<Analytics | null>(null);
   const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState<"overview" | "sources" | "audience">("overview");
+  const [tab, setTab] = useState<"overview" | "sources" | "audience" | "performance">("overview");
 
   useEffect(() => {
     async function load() {
@@ -121,30 +152,31 @@ export default function AnalyticsPage() {
 
   if (loading) return <Loading />;
 
-  const countriesData = analytics?.countries?.map(c => ({
-    name: c.country || c.name || "unknown",
-    value: c.views || c.count || 0,
-    icon: countryFlags[c.country || c.name || ""] || "🌍",
+  const geoData = analytics?.geo?.map(g => ({
+    name: g.country || g.region || g.name || "unknown",
+    value: g.views || g.count || g.value || 0,
+    icon: countryFlags[g.country || g.name || ""] || "🌍",
   })) || [];
 
-  const referrersData = analytics?.referrers?.map(r => ({
-    name: r.referrer || r.name || "direct",
-    value: r.views || r.count || 0,
+  const trafficData = analytics?.traffic?.map(t => ({
+    name: t.source || t.referrer || t.name || "direct",
+    value: t.views || t.count || t.value || 0,
   })) || [];
 
   const devicesData = analytics?.devices?.map(d => ({
     name: d.device || d.name || "unknown",
-    value: d.views || d.count || 0,
+    value: d.views || d.count || d.value || 0,
     icon: (d.device || d.name || "").toLowerCase().includes("mobile") ? "📱" : 
           (d.device || d.name || "").toLowerCase().includes("tablet") ? "📱" : "💻",
   })) || [];
 
   const browsersData = analytics?.browsers?.map(b => ({
     name: b.browser || b.name || "unknown",
-    value: b.views || b.count || 0,
+    value: b.views || b.count || b.value || 0,
   })) || [];
 
   const activeLinks = links.filter(l => l.enabled).length;
+  const perf = analytics?.performance;
 
   return (
     <DashboardLayout>
@@ -152,12 +184,12 @@ export default function AnalyticsPage() {
       <div className={`${sidebarWidth} min-h-screen transition-all duration-200`}>
         <Header title="analytics" username={profile?.username} />
         <main className="p-6 lg:p-8 max-w-2xl">
-          <div className="flex gap-4 mb-8 border-b border-gray-200 dark:border-gray-800">
-            {(["overview", "sources", "audience"] as const).map((t) => (
+          <div className="flex gap-4 mb-8 border-b border-gray-200 dark:border-gray-800 overflow-x-auto">
+            {(["overview", "sources", "audience", "performance"] as const).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
-                className={`pb-3 text-sm transition-colors ${
+                className={`pb-3 text-sm transition-colors whitespace-nowrap ${
                   tab === t
                     ? "text-pink-500 border-b-2 border-pink-500 -mb-px"
                     : "text-gray-400 hover:text-[#1a1a1a] dark:hover:text-white"
@@ -209,9 +241,9 @@ export default function AnalyticsPage() {
           {tab === "sources" && (
             <>
               <DataList 
-                title="top referrers" 
-                items={referrersData} 
-                emptyText="no referrer data yet"
+                title="traffic sources" 
+                items={trafficData} 
+                emptyText="no traffic data yet"
               />
               <DataList 
                 title="browsers" 
@@ -224,8 +256,8 @@ export default function AnalyticsPage() {
           {tab === "audience" && (
             <>
               <DataList 
-                title="countries" 
-                items={countriesData} 
+                title="locations" 
+                items={geoData} 
                 emptyText="no location data yet"
               />
               <DataList 
@@ -234,6 +266,29 @@ export default function AnalyticsPage() {
                 emptyText="no device data yet"
               />
             </>
+          )}
+
+          {tab === "performance" && (
+            <section>
+              <h2 className="text-sm font-medium text-[#1a1a1a] dark:text-white mb-6">core web vitals</h2>
+              {perf ? (
+                <div>
+                  <PerformanceCard label="LCP (Largest Contentful Paint)" value={perf.lcp} unit="s" good={2.5} bad={4} />
+                  <PerformanceCard label="FID (First Input Delay)" value={perf.fid} unit="ms" good={100} bad={300} />
+                  <PerformanceCard label="CLS (Cumulative Layout Shift)" value={perf.cls} unit="" good={0.1} bad={0.25} />
+                  <PerformanceCard label="TTFB (Time to First Byte)" value={perf.ttfb} unit="ms" good={800} bad={1800} />
+                  
+                  {!perf.lcp && !perf.fid && !perf.cls && !perf.ttfb && (
+                    <p className="text-sm text-gray-400">no performance data collected yet</p>
+                  )}
+                </div>
+              ) : (
+                <div className="py-8 text-center border border-dashed border-gray-200 dark:border-gray-800">
+                  <p className="text-sm text-gray-400 mb-2">performance tracking enabled</p>
+                  <p className="text-xs text-gray-500">web vitals data will appear as visitors use your page</p>
+                </div>
+              )}
+            </section>
           )}
 
           {!analytics && (
