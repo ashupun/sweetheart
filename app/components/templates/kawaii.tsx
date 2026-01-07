@@ -12,70 +12,49 @@ export const config: TemplateConfig = {
   tags: ["cute", "aesthetic", "kawaii"],
 };
 
-export function Template({ profile, links, theme, showSocials }: TemplateProps) {
-  const emojis = ["🌸", "💫", "🎀", "✨", "💕", "🌷"];
-  const decorations = ["♡", "✧", "♪", "☆"];
-  
+export function Template({ profile, links, theme }: TemplateProps) {
   return (
-    <div className="h-full overflow-y-auto scrollbar-hide pt-8 pb-6 px-4 relative" style={{ backgroundColor: theme.bg }}>
-      <div className="absolute top-4 left-4 text-lg opacity-20">♡</div>
-      <div className="absolute top-12 right-6 text-sm opacity-15">✧</div>
-      <div className="absolute bottom-20 left-6 text-base opacity-10">♪</div>
-      <div className="absolute bottom-8 right-4 text-lg opacity-20">☆</div>
-      
-      <div className="text-center font-sans relative z-10">
-        <div className="relative inline-block mb-3">
+    <div className="min-h-full w-full flex items-center justify-center p-8 relative overflow-hidden" style={{ backgroundColor: "#fef3f2" }}>
+      <div className="absolute top-10 left-10 text-4xl opacity-20">✿</div>
+      <div className="absolute top-20 right-20 text-3xl opacity-20">♡</div>
+      <div className="absolute bottom-20 left-20 text-3xl opacity-20">✧</div>
+      <div className="absolute bottom-10 right-10 text-4xl opacity-20">❀</div>
+
+      <div className="w-full max-w-md text-center relative z-10">
+        <div className="relative inline-block mb-6">
           <div
-            className="w-[72px] h-[72px] rounded-full flex items-center justify-center text-white text-xl font-bold border-4 border-white shadow-lg"
-            style={{ backgroundColor: theme.primary }}
+            className="w-28 h-28 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg border-4 border-white"
+            style={{ background: `linear-gradient(135deg, #fb7185, #f472b6)` }}
           >
             {profile?.displayName?.charAt(0) || "?"}
           </div>
-          <span className="absolute -top-1 -right-0 text-sm animate-bounce" style={{ animationDuration: "2s" }}>✨</span>
-          <span className="absolute -bottom-0.5 -left-1 text-sm animate-bounce" style={{ animationDuration: "2.5s" }}>💖</span>
+          <span className="absolute -top-1 -right-1 text-2xl">🎀</span>
+          <span className="absolute -bottom-1 left-0 text-xl">✿</span>
         </div>
-        
-        <h1 className="text-[14px] font-bold mb-0.5" style={{ color: theme.secondary }}>
-          {profile?.displayName || "your name"} ♡
+
+        <h1 className="text-2xl font-bold text-rose-500 mb-1">
+          {profile?.displayName || "Your Name"} ♡
         </h1>
-        <p className="text-[10px] mb-1" style={{ color: theme.primary }}>
-          ꒰ @{profile?.username || "username"} ꒱
-        </p>
-        <p className="text-[10px] mb-4 opacity-60 px-4" style={{ color: theme.secondary }}>
-          {profile?.bio || "✿ your bio ✿"}
+        <p className="text-rose-400 text-sm mb-2">@{profile?.username || "username"}</p>
+        <p className="text-rose-400/80 mb-8 max-w-xs mx-auto">
+          ꒰ {profile?.bio || "welcome to my page!"} ꒱
         </p>
 
-        {showSocials && (
-          <div className="flex justify-center gap-2 mb-4">
-            {["💌", "🎵", "📸"].map((emoji, i) => (
-              <div
-                key={i}
-                className="w-9 h-9 rounded-full flex items-center justify-center text-sm border-2 border-white shadow-sm"
-                style={{ backgroundColor: `${theme.primary}15` }}
-              >
-                {emoji}
-              </div>
-            ))}
-          </div>
-        )}
-
-        <div className="space-y-2">
-          {links.map((link, i) => (
-            <div
+        <div className="space-y-3">
+          {links.map((link) => (
+            <a
               key={link.id}
-              className="py-3 px-4 rounded-2xl border-2 border-white shadow-sm hover:scale-[1.02] transition-transform"
-              style={{ backgroundColor: `${theme.primary}12` }}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full py-4 px-6 bg-white rounded-full text-rose-500 font-medium shadow-md hover:shadow-lg hover:scale-[1.02] transition-all border-2 border-rose-200"
             >
-              <span className="text-[11px]" style={{ color: theme.secondary }}>
-                {emojis[i % emojis.length]} {link.title}
-              </span>
-            </div>
+              ♡ {link.title} ♡
+            </a>
           ))}
         </div>
 
-        <p className="text-[10px] mt-6" style={{ color: theme.primary }}>
-          ♡ sweethe.art ♡
-        </p>
+        <p className="text-xs text-rose-300 mt-10">✧ sweethe.art ✧</p>
       </div>
     </div>
   );

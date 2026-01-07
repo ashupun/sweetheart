@@ -15,6 +15,13 @@ export async function getLinks() {
   return result;
 }
 
+function ensureAbsoluteUrl(url: string): string {
+  if (!url) return url;
+  if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  if (url.startsWith("//")) return `https:${url}`;
+  return `https://${url}`;
+}
+
 export async function addLink(title: string, url: string) {
   const session = await getSession();
   if (!session?.user) return { error: "not authenticated" };
@@ -26,7 +33,7 @@ export async function addLink(title: string, url: string) {
   await db.insert(link).values({
     userId: session.user.id,
     title,
-    url,
+    url: ensureAbsoluteUrl(url),
     position,
   });
 
@@ -37,6 +44,10 @@ export async function addLink(title: string, url: string) {
 export async function updateLink(id: string, updates: Partial<typeof link.$inferSelect>) {
   const session = await getSession();
   if (!session?.user) return { error: "not authenticated" };
+
+  if (updates.url) {
+    updates.url = ensureAbsoluteUrl(updates.url);
+  }
 
   await db
     .update(link)
@@ -90,5 +101,13 @@ export async function updateProfile(updates: Partial<typeof profile.$inferSelect
 
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/settings");
+  revalidatePath("/dashboard/templates");
+  revalidatePath("/dashboard/appearance");
+  
+  const userProfile = await db.select().from(profile).where(eq(profile.userId, session.user.id)).limit(1);
+  if (userProfile[0]?.username) {
+    revalidatePath(`/${userProfile[0].username}`);
+  }
+  
   return { success: true };
 }

@@ -23,7 +23,7 @@ const themes: Record<string, { primary: string; secondary: string; bg: string }>
   forest: { primary: "#22c55e", secondary: "#16a34a", bg: "#f0fdf4" },
 };
 
-export function PhonePreview({ profile, links, theme = "pink", showSocials = true, template = "minimal" }: PreviewProps) {
+export function DesktopPreview({ profile, links, theme = "pink", showSocials = true, template = "minimal" }: PreviewProps) {
   const currentTheme = themes[theme] || themes.pink;
   const templateModule = getTemplate(template);
   const TemplateComponent = templateModule.Template;
@@ -38,9 +38,13 @@ export function PhonePreview({ profile, links, theme = "pink", showSocials = tru
 
   return (
     <div className="relative">
-      <div className="w-[280px] h-[580px] bg-gray-900 rounded-[3rem] p-3 shadow-2xl">
-        <div className="w-full h-full rounded-[2.5rem] overflow-hidden relative">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-gray-900 rounded-b-2xl z-10" />
+      <div className="w-full aspect-video bg-gray-900 rounded-xl overflow-hidden shadow-2xl border border-gray-800">
+        <div className="h-6 bg-gray-800 flex items-center gap-1.5 px-3">
+          <div className="w-2.5 h-2.5 rounded-full bg-red-500" />
+          <div className="w-2.5 h-2.5 rounded-full bg-yellow-500" />
+          <div className="w-2.5 h-2.5 rounded-full bg-green-500" />
+        </div>
+        <div className="h-[calc(100%-24px)] overflow-hidden">
           <TemplateComponent
             profile={profile}
             links={displayLinks}
@@ -50,76 +54,6 @@ export function PhonePreview({ profile, links, theme = "pink", showSocials = tru
         </div>
       </div>
     </div>
-  );
-}
-
-export function TemplatePreview({ template, selected, onClick }: {
-  template: string;
-  selected?: boolean;
-  onClick?: () => void;
-}) {
-  const templateModule = getTemplate(template);
-  const config = templateModule.config;
-  const isBrutalist = template === "brutalist";
-  const isY2k = template === "y2k";
-  const isGlass = template === "glass";
-
-  return (
-    <button
-      onClick={onClick}
-      className={`w-full aspect-9/16 rounded-2xl overflow-hidden border-2 transition-all hover:scale-[1.02] hover:shadow-lg relative group ${selected ? "border-pink-500 ring-2 ring-pink-500/20 shadow-md" : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
-        }`}
-      style={{
-        background: isY2k
-          ? "linear-gradient(180deg, #0f0f23, #1e1b4b)"
-          : isGlass
-            ? `linear-gradient(160deg, ${config.previewBg} 0%, ${config.previewAccent}20 100%)`
-            : config.previewBg
-      }}
-    >
-      {isGlass && (
-        <div className="absolute inset-4 rounded-xl bg-white/20 backdrop-blur-sm border border-white/30" />
-      )}
-      <div className="absolute inset-0 p-4 flex flex-col items-center justify-center z-10">
-        <div
-          className={`w-10 h-10 mb-3 flex items-center justify-center text-white text-sm font-medium ${isBrutalist ? "border-2" : isY2k ? "rounded-lg" : "rounded-full"
-            }`}
-          style={{
-            backgroundColor: isBrutalist ? "transparent" : config.previewAccent,
-            borderColor: isBrutalist ? config.previewAccent : "transparent",
-            color: isBrutalist ? config.previewAccent : "white",
-            boxShadow: isY2k ? `0 0 15px ${config.previewAccent}60` : "none"
-          }}
-        >
-          ♡
-        </div>
-        <div
-          className="w-12 h-1.5 rounded mb-1"
-          style={{
-            backgroundColor: isY2k || isBrutalist ? config.previewAccent : config.previewAccent,
-            opacity: isY2k ? 0.8 : 0.4
-          }}
-        />
-        <div
-          className="w-8 h-1 rounded mb-4"
-          style={{ backgroundColor: config.previewAccent, opacity: 0.2 }}
-        />
-        <div className="w-full space-y-2 px-2">
-          {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className={`h-5 ${isBrutalist ? "" : "rounded-lg"}`}
-              style={{
-                backgroundColor: isBrutalist ? "transparent" : isY2k ? `${config.previewAccent}15` : `${config.previewAccent}18`,
-                border: isBrutalist ? `2px solid ${config.previewAccent}` : isY2k ? `1px solid ${config.previewAccent}30` : "none",
-                boxShadow: isBrutalist ? `2px 2px 0 ${config.previewAccent}` : "none"
-              }}
-            />
-          ))}
-        </div>
-      </div>
-      <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-    </button>
   );
 }
 

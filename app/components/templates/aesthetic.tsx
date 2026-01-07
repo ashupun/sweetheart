@@ -12,65 +12,52 @@ export const config: TemplateConfig = {
   tags: ["aesthetic", "cute", "dreamy"],
 };
 
-export function Template({ profile, links, theme, showSocials }: TemplateProps) {
+export function Template({ profile, links, theme }: TemplateProps) {
   return (
-    <div className="h-full overflow-y-auto scrollbar-hide pt-10 pb-6 px-5 relative" style={{ backgroundColor: theme.bg }}>
-      <div className="absolute top-6 left-3 w-28 h-28 rounded-full opacity-15 blur-3xl animate-pulse" style={{ backgroundColor: theme.primary }} />
-      <div className="absolute bottom-12 right-2 w-24 h-24 rounded-full opacity-10 blur-3xl animate-pulse" style={{ backgroundColor: theme.secondary, animationDelay: "1s" }} />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full opacity-5 blur-3xl" style={{ backgroundColor: theme.primary }} />
-      
-      <div className="text-center relative z-10 font-sans">
-        <div className="relative inline-block mb-4">
-          <div className="absolute inset-0 rounded-full blur-lg opacity-40" style={{ backgroundColor: theme.primary }} />
+    <div className="min-h-full w-full flex items-center justify-center p-8 relative overflow-hidden" style={{ backgroundColor: theme.bg }}>
+      <div className="absolute top-20 left-20 w-64 h-64 rounded-full blur-3xl opacity-30" style={{ backgroundColor: theme.primary }} />
+      <div className="absolute bottom-20 right-20 w-48 h-48 rounded-full blur-3xl opacity-20" style={{ backgroundColor: theme.secondary }} />
+
+      <div className="w-full max-w-md text-center relative z-10">
+        <div className="relative inline-block mb-6">
+          <div className="absolute inset-0 rounded-full blur-xl opacity-50" style={{ backgroundColor: theme.primary }} />
           <div
-            className="relative w-[76px] h-[76px] rounded-full flex items-center justify-center text-white text-2xl font-light border-2 border-white/60 shadow-xl"
-            style={{ background: `linear-gradient(145deg, ${theme.primary}, ${theme.secondary})` }}
+            className="relative w-28 h-28 rounded-full flex items-center justify-center text-white text-3xl font-semibold shadow-xl border-4 border-white"
+            style={{ background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})` }}
           >
             {profile?.displayName?.charAt(0) || "?"}
           </div>
-          <span className="absolute -top-0.5 -right-1 text-xs">✦</span>
-          <span className="absolute -bottom-0.5 -left-1 text-xs">✦</span>
+          <span className="absolute -top-2 -right-2 text-2xl">✧</span>
+          <span className="absolute -bottom-1 -left-1 text-xl">♡</span>
         </div>
-        
-        <h1 className="text-[15px] font-medium mb-0.5" style={{ color: theme.secondary }}>
-          {profile?.displayName || "your name"}
+
+        <h1 className="text-2xl font-semibold mb-1" style={{ color: theme.secondary }}>
+          {profile?.displayName || "Your Name"}
         </h1>
-        <p className="text-[10px] mb-1 opacity-70" style={{ color: theme.primary }}>
+        <p className="text-sm opacity-60 mb-2" style={{ color: theme.primary }}>
           @{profile?.username || "username"}
         </p>
-        <p className="text-[10px] mb-5 opacity-50 italic px-4 leading-relaxed" style={{ color: theme.secondary }}>
-          {profile?.bio || "・゚✧ dreaming ✧゚・"}
+        <p className="mb-8 max-w-xs mx-auto opacity-70" style={{ color: theme.secondary }}>
+          ✧ {profile?.bio || "dreaming in pixels"} ✧
         </p>
 
-        {showSocials && (
-          <div className="flex justify-center gap-2 mb-5">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/30"
-                style={{ backgroundColor: `${theme.primary}10` }}
-              >
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: theme.primary, opacity: 0.4 }} />
-              </div>
-            ))}
-          </div>
-        )}
-
-        <div className="space-y-2.5">
+        <div className="space-y-3">
           {links.map((link) => (
-            <div
+            <a
               key={link.id}
-              className="py-3 px-4 bg-white/40 backdrop-blur-md rounded-2xl border border-white/50 shadow-sm"
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full py-4 px-6 bg-white/70 backdrop-blur-sm rounded-2xl font-medium hover:bg-white/90 hover:scale-[1.02] transition-all shadow-sm"
+              style={{ color: theme.secondary }}
             >
-              <span className="text-[11px]" style={{ color: theme.secondary }}>
-                ♡ {link.title}
-              </span>
-            </div>
+              ♡ {link.title}
+            </a>
           ))}
         </div>
 
-        <p className="text-[9px] mt-8 opacity-30" style={{ color: theme.primary }}>
-          ✦ sweethe.art ✦
+        <p className="text-xs mt-10 opacity-40" style={{ color: theme.primary }}>
+          ✧ sweethe.art ✧
         </p>
       </div>
     </div>

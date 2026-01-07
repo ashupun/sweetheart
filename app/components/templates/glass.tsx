@@ -12,43 +12,52 @@ export const config: TemplateConfig = {
   tags: ["minimal", "modern", "glass"],
 };
 
-export function Template({ profile, links, theme, showSocials }: TemplateProps) {
+export function Template({ profile, links, theme }: TemplateProps) {
   return (
-    <div 
-      className="h-full overflow-y-auto scrollbar-hide pt-8 pb-6 px-4"
-      style={{ background: `linear-gradient(160deg, ${theme.bg} 0%, ${theme.primary}20 50%, ${theme.secondary}15 100%)` }}
+    <div
+      className="min-h-full w-full flex items-center justify-center p-8 relative overflow-hidden"
+      style={{ background: `linear-gradient(135deg, ${theme.bg}, ${theme.primary}20)` }}
     >
-      <div className="text-center font-sans">
-        <div className="bg-white/20 backdrop-blur-2xl rounded-3xl p-6 border border-white/30 shadow-2xl mx-1">
-          <div
-            className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center text-white text-xl font-semibold shadow-lg rotate-3 hover:rotate-0 transition-transform"
-            style={{ background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})` }}
-          >
-            {profile?.displayName?.charAt(0) || "?"}
-          </div>
-          
-          <h1 className="text-sm font-semibold mb-0.5" style={{ color: theme.secondary }}>
-            {profile?.displayName || "your name"}
-          </h1>
-          <p className="text-[10px] opacity-60 mb-4 px-2 leading-relaxed" style={{ color: theme.secondary }}>
-            {profile?.bio || "your bio"}
-          </p>
+      <div className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-30" style={{ backgroundColor: theme.primary }} />
+      <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full blur-3xl opacity-20" style={{ backgroundColor: theme.secondary }} />
 
-          <div className="space-y-2">
-            {links.map((link) => (
-              <div
-                key={link.id}
-                className="py-3 px-4 bg-white/30 backdrop-blur rounded-xl border border-white/20 hover:bg-white/40 transition-colors"
-              >
-                <span className="text-[11px] font-medium" style={{ color: theme.secondary }}>
+      <div className="w-full max-w-md relative z-10">
+        <div className="p-8 bg-white/30 backdrop-blur-xl rounded-3xl border border-white/50 shadow-2xl">
+          <div className="text-center">
+            <div
+              className="w-24 h-24 mx-auto rounded-2xl flex items-center justify-center text-white text-3xl font-semibold mb-6 shadow-lg"
+              style={{ background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})` }}
+            >
+              {profile?.displayName?.charAt(0) || "?"}
+            </div>
+
+            <h1 className="text-2xl font-semibold text-gray-800 mb-1">
+              {profile?.displayName || "Your Name"}
+            </h1>
+            <p className="text-sm mb-2" style={{ color: theme.primary }}>
+              @{profile?.username || "username"}
+            </p>
+            <p className="text-gray-600 mb-8 max-w-xs mx-auto">
+              {profile?.bio || "your bio goes here"}
+            </p>
+
+            <div className="space-y-3">
+              {links.map((link) => (
+                <a
+                  key={link.id}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full py-4 px-6 bg-white/50 backdrop-blur-sm rounded-xl text-gray-800 font-medium hover:bg-white/70 hover:scale-[1.02] transition-all border border-white/30"
+                >
                   {link.title}
-                </span>
-              </div>
-            ))}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
 
-        <p className="text-[9px] mt-6 opacity-30" style={{ color: theme.secondary }}>
+        <p className="text-xs text-center mt-6 opacity-50" style={{ color: theme.secondary }}>
           sweethe.art
         </p>
       </div>

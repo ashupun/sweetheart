@@ -88,3 +88,9 @@ export const social = pgTable("social", {
   platform: text("platform").notNull(),
   url: text("url").notNull(),
 });
+
+export const waitlist = pgTable("waitlist", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: text("email").notNull().unique(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});

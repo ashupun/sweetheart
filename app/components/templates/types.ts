@@ -15,5 +15,6 @@ export interface TemplateConfig {
   previewBg: string;
   previewAccent: string;
   tags?: string[];
+  isPro?: boolean;
 }
 

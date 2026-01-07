@@ -6,7 +6,7 @@ import { Header } from "../../components/header";
 import { Loading } from "../../components/loading";
 import { Alert } from "../../components/alert";
 import { DashboardLayout } from "../../components/layouts";
-import { PhonePreview } from "../../components/preview";
+import { DesktopPreview } from "../../components/preview";
 import { getProfileData, getLinks, updateProfile } from "../actions";
 import { signOut } from "@/lib/client";
 import type { Profile, Link } from "@/lib/types";
@@ -72,10 +72,9 @@ export default function SettingsPage() {
       <Sidebar active="settings" username={profile?.username} />
       <div className="lg:ml-56 min-h-screen">
         <Header title="settings" username={profile?.username} />
-        <main className="p-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid lg:grid-cols-5 gap-8">
-              <div className="lg:col-span-3 space-y-6">
+        <main className="p-6 lg:p-8">
+          <div className="flex gap-8">
+            <div className="flex-1 min-w-0 space-y-6">
                 {error && <Alert type="error" message={error} />}
                 {success && <Alert type="success" message="saved successfully ♡" />}
 
@@ -179,7 +178,7 @@ export default function SettingsPage() {
 
                     <div className="p-5 rounded-xl bg-linear-to-r from-pink-50 to-purple-50 dark:from-pink-500/5 dark:to-purple-500/5 border border-pink-200 dark:border-pink-900/30">
                       <div className="flex items-start gap-4">
-                        <div className="w-10 h-10 rounded-full bg-linear-to-br from-pink-500 to-purple-500 flex items-center justify-center text-white text-sm flex-shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-linear-to-br from-pink-500 to-purple-500 flex items-center justify-center text-white text-sm shrink-0">
                           ♡
                         </div>
                         <div>
@@ -225,31 +224,28 @@ export default function SettingsPage() {
                 )}
               </div>
 
-              <div className="lg:col-span-2 hidden lg:block">
-                <div className="sticky top-24">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <p className="text-sm font-medium text-[#1a1a1a] dark:text-white">live preview</p>
-                      <p className="text-xs text-gray-400 dark:text-gray-500">see changes in real-time</p>
-                    </div>
-                    <a
-                      href={`/${profile?.username}`}
-                      target="_blank"
-                      className="text-xs text-pink-500 hover:text-pink-400 transition-colors"
-                    >
-                      open page ↗
-                    </a>
+            <div className="hidden xl:block w-[400px] shrink-0">
+              <div className="sticky top-24">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <p className="text-sm font-medium text-[#1a1a1a] dark:text-white">live preview</p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500">see changes in real-time</p>
                   </div>
-                  <div className="flex justify-center">
-                    <PhonePreview
-                      profile={previewProfile}
-                      links={links}
-                      theme={profile?.theme ?? undefined}
-                      showSocials={profile?.showSocials ?? undefined}
-                      template={profile?.template ?? undefined}
-                    />
-                  </div>
+                  <a
+                    href={`/${profile?.username}`}
+                    target="_blank"
+                    className="text-xs text-pink-500 hover:text-pink-400 transition-colors"
+                  >
+                    open page ↗
+                  </a>
                 </div>
+                <DesktopPreview
+                  profile={previewProfile}
+                  links={links}
+                  theme={profile?.theme ?? undefined}
+                  showSocials={profile?.showSocials ?? undefined}
+                  template={profile?.template ?? undefined}
+                />
               </div>
             </div>
           </div>

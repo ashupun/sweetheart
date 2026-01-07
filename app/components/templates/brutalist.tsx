@@ -14,46 +14,35 @@ export const config: TemplateConfig = {
 
 export function Template({ profile, links, theme }: TemplateProps) {
   return (
-    <div className="h-full overflow-y-auto scrollbar-hide pt-10 pb-6 px-4 bg-white">
-      <div className="text-center font-mono">
-        <div
-          className="w-20 h-20 mx-auto mb-4 flex items-center justify-center text-2xl font-black"
-          style={{ 
-            border: `4px solid ${theme.primary}`,
-            color: theme.primary,
-          }}
-        >
+    <div className="min-h-full w-full flex items-center justify-center p-8 bg-white">
+      <div className="w-full max-w-lg text-center">
+        <div className="w-28 h-28 mx-auto border-4 border-black flex items-center justify-center text-4xl font-black mb-6 bg-yellow-300">
           {profile?.displayName?.charAt(0)?.toUpperCase() || "?"}
         </div>
-        
-        <h1 className="text-lg font-black uppercase tracking-tight text-black mb-0.5">
+
+        <h1 className="text-4xl font-black uppercase tracking-tight text-black mb-2">
           {profile?.displayName || "YOUR NAME"}
         </h1>
-        <p className="text-[9px] uppercase tracking-[0.25em] mb-6" style={{ color: theme.primary }}>
-          {profile?.bio || "YOUR BIO HERE"}
+        <p className="text-lg font-mono text-black mb-2">@{profile?.username || "username"}</p>
+        <p className="text-black font-mono mb-10 max-w-sm mx-auto border-t-2 border-b-2 border-black py-4">
+          {profile?.bio || "NO BIO SET."}
         </p>
 
-        <div className="space-y-2">
-          {links.map((link, i) => (
-            <div
+        <div className="space-y-4">
+          {links.map((link) => (
+            <a
               key={link.id}
-              className="py-3.5 px-4 text-left hover:translate-x-1 hover:-translate-y-1 transition-transform cursor-pointer"
-              style={{ 
-                border: "3px solid black",
-                backgroundColor: i % 2 === 0 ? theme.bg : "white",
-                boxShadow: "3px 3px 0 black",
-              }}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full py-4 px-6 bg-white border-4 border-black text-black font-black uppercase tracking-wide hover:bg-black hover:text-white transition-colors shadow-[4px_4px_0_0_#000]"
             >
-              <span className="text-[11px] font-black uppercase tracking-wide text-black">
-                {link.title} →
-              </span>
-            </div>
+              → {link.title}
+            </a>
           ))}
         </div>
 
-        <p className="text-[9px] mt-8 font-black uppercase tracking-[0.3em]" style={{ color: theme.primary }}>
-          SWEETHE.ART
-        </p>
+        <p className="text-xs font-mono mt-12 text-black">[ SWEETHE.ART ]</p>
       </div>
     </div>
   );

@@ -12,40 +12,40 @@ export const config: TemplateConfig = {
   tags: ["minimal", "clean", "simple"],
 };
 
-export function Template({ profile, links, theme, showSocials }: TemplateProps) {
+export function Template({ profile, links, theme }: TemplateProps) {
   return (
-    <div className="h-full overflow-y-auto scrollbar-hide pt-14 pb-8 px-6" style={{ backgroundColor: theme.bg }}>
-      <div className="text-center font-mono max-w-[220px] mx-auto">
+    <div className="min-h-full w-full flex items-center justify-center p-8" style={{ backgroundColor: "#fafafa" }}>
+      <div className="w-full max-w-md text-center">
         <div
-          className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center text-white text-2xl font-light shadow-sm"
-          style={{ backgroundColor: theme.primary }}
+          className="w-24 h-24 mx-auto rounded-full flex items-center justify-center text-white text-3xl font-semibold mb-6 shadow-lg"
+          style={{ background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})` }}
         >
           {profile?.displayName?.charAt(0) || "?"}
         </div>
-        
-        <h1 className="text-base font-medium tracking-tight mb-1" style={{ color: theme.secondary }}>
-          {profile?.displayName || "your name"}
+
+        <h1 className="text-2xl font-semibold text-gray-900 mb-1">
+          {profile?.displayName || "Your Name"}
         </h1>
-        <p className="text-[11px] opacity-50 leading-relaxed mb-8" style={{ color: theme.secondary }}>
+        <p className="text-gray-500 mb-2">@{profile?.username || "username"}</p>
+        <p className="text-gray-600 mb-8 max-w-xs mx-auto">
           {profile?.bio || "your bio goes here"}
         </p>
 
         <div className="space-y-3">
           {links.map((link) => (
-            <div
+            <a
               key={link.id}
-              className="py-3.5 px-4 bg-white/80 backdrop-blur-sm rounded-lg text-center shadow-sm hover:shadow-md transition-shadow"
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full py-4 px-6 bg-white rounded-xl border border-gray-200 text-gray-900 font-medium hover:border-gray-300 hover:shadow-sm transition-all"
             >
-              <span className="text-[12px] tracking-wide" style={{ color: theme.secondary }}>
-                {link.title}
-              </span>
-            </div>
+              {link.title}
+            </a>
           ))}
         </div>
 
-        <p className="text-[9px] mt-10 opacity-25 tracking-[0.2em] uppercase" style={{ color: theme.secondary }}>
-          sweethe.art
-        </p>
+        <p className="text-xs text-gray-400 mt-10">sweethe.art</p>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import { Sidebar } from "../../components/sidebar";
 import { Header } from "../../components/header";
 import { Loading } from "../../components/loading";
 import { DashboardLayout } from "../../components/layouts";
-import { PhonePreview } from "../../components/preview";
+import { DesktopPreview } from "../../components/preview";
 import { getProfileData, getLinks } from "../actions";
 import type { Profile, Link } from "@/lib/types";
 
@@ -34,10 +34,9 @@ export default function AnalyticsPage() {
       <Sidebar active="analytics" username={profile?.username} />
       <div className="lg:ml-56 min-h-screen">
         <Header title="analytics" username={profile?.username} />
-        <main className="p-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid lg:grid-cols-5 gap-8">
-              <div className="lg:col-span-3 space-y-6">
+        <main className="p-6 lg:p-8">
+          <div className="flex gap-8">
+            <div className="flex-1 min-w-0 space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-6 border border-gray-200 dark:border-gray-800 rounded-xl bg-white dark:bg-[#252525]">
                     <div className="flex items-center justify-between mb-4">
@@ -117,31 +116,28 @@ export default function AnalyticsPage() {
                 </a>
               </div>
 
-              <div className="lg:col-span-2 hidden lg:block">
-                <div className="sticky top-24">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <p className="text-sm font-medium text-[#1a1a1a] dark:text-white">your page</p>
-                      <p className="text-xs text-gray-400 dark:text-gray-500">how visitors see you</p>
-                    </div>
-                    <a
-                      href={`/${profile?.username}`}
-                      target="_blank"
-                      className="text-xs text-pink-500 hover:text-pink-400 transition-colors"
-                    >
-                      open page ↗
-                    </a>
+            <div className="hidden xl:block w-[400px] shrink-0">
+              <div className="sticky top-24">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <p className="text-sm font-medium text-[#1a1a1a] dark:text-white">your page</p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500">how visitors see you</p>
                   </div>
-                  <div className="flex justify-center">
-                    <PhonePreview
-                      profile={profile}
-                      links={links}
-                      theme={profile?.theme ?? undefined}
-                      showSocials={profile?.showSocials ?? undefined}
-                      template={profile?.template ?? undefined}
-                    />
-                  </div>
+                  <a
+                    href={`/${profile?.username}`}
+                    target="_blank"
+                    className="text-xs text-pink-500 hover:text-pink-400 transition-colors"
+                  >
+                    open page ↗
+                  </a>
                 </div>
+                <DesktopPreview
+                  profile={profile}
+                  links={links}
+                  theme={profile?.theme ?? undefined}
+                  showSocials={profile?.showSocials ?? undefined}
+                  template={profile?.template ?? undefined}
+                />
               </div>
             </div>
           </div>

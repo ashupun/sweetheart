@@ -6,72 +6,53 @@ export const config: TemplateConfig = {
   id: "soft",
   name: "soft",
   description: "warm & cozy",
-  vibe: "☁ cotton candy",
-  previewBg: "#fef7f0",
-  previewAccent: "#f9a8d4",
+  vibe: "cottagecore dreams",
+  previewBg: "#fff7ed",
+  previewAccent: "#f97316",
   tags: ["cute", "aesthetic", "soft"],
 };
 
-export function Template({ profile, links, theme, showSocials }: TemplateProps) {
+export function Template({ profile, links, theme }: TemplateProps) {
   return (
-    <div className="h-full overflow-y-auto scrollbar-hide pt-8 pb-6 px-5 bg-linear-to-b from-rose-50 via-orange-50 to-amber-50">
-      <div className="text-center font-sans">
-        <div className="relative inline-block mb-4">
-          <div className="absolute -inset-2 bg-gradient-to-br from-rose-200 to-orange-200 rounded-full blur-lg opacity-50" />
+    <div className="min-h-full w-full flex items-center justify-center p-8 relative" style={{ background: "linear-gradient(180deg, #fff7ed, #ffe4e6)" }}>
+      <div className="absolute top-10 left-10 w-32 h-32 rounded-full bg-rose-200 opacity-40 blur-3xl" />
+      <div className="absolute bottom-20 right-20 w-40 h-40 rounded-full bg-orange-200 opacity-40 blur-3xl" />
+
+      <div className="w-full max-w-md text-center relative z-10">
+        <div className="relative inline-block mb-6">
           <div
-            className="relative w-[76px] h-[76px] rounded-full flex items-center justify-center text-2xl border-4 border-white shadow-xl"
-            style={{ 
-              background: "linear-gradient(135deg, #fda4af, #fdba74)",
-            }}
+            className="w-28 h-28 rounded-full flex items-center justify-center text-white text-3xl font-semibold shadow-lg border-4 border-white"
+            style={{ background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})` }}
           >
-            <span className="text-white drop-shadow-sm">
-              {profile?.displayName?.charAt(0) || "?"}
-            </span>
+            {profile?.displayName?.charAt(0) || "?"}
           </div>
-          <span className="absolute -top-1 -right-1 text-lg">🌸</span>
+          <span className="absolute -top-1 -right-1 text-2xl">🌷</span>
         </div>
-        
-        <h1 className="text-[15px] font-semibold text-rose-400 mb-0.5">
-          {profile?.displayName || "your name"}
+
+        <h1 className="text-2xl font-semibold text-rose-600 mb-1">
+          {profile?.displayName || "Your Name"}
         </h1>
-        <p className="text-[10px] text-orange-400 mb-1">
-          @{profile?.username || "username"}
-        </p>
-        <p className="text-[10px] mb-5 text-rose-300 px-4 leading-relaxed">
-          {profile?.bio || "spreading warmth & love ♡"}
+        <p className="text-orange-500 text-sm mb-2">@{profile?.username || "username"}</p>
+        <p className="text-gray-600 mb-8 max-w-xs mx-auto leading-relaxed">
+          {profile?.bio || "cozy vibes & warm tea ☕"}
         </p>
 
-        {showSocials && (
-          <div className="flex justify-center gap-2 mb-5">
-            {["💌", "🎀", "🌷"].map((emoji, i) => (
-              <div
-                key={i}
-                className="w-9 h-9 rounded-full flex items-center justify-center text-sm bg-white shadow-md"
-              >
-                {emoji}
-              </div>
-            ))}
-          </div>
-        )}
-
-        <div className="space-y-2.5">
-          {links.map((link, i) => (
-            <div
+        <div className="space-y-3">
+          {links.map((link) => (
+            <a
               key={link.id}
-              className="py-3.5 px-4 rounded-2xl bg-white shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full py-4 px-6 bg-white/80 backdrop-blur-sm rounded-full text-rose-500 font-medium shadow-md hover:shadow-lg hover:scale-[1.02] transition-all border border-rose-100"
             >
-              <span className="text-[11px] text-rose-400 font-medium">
-                {["🌸", "✿", "❀", "✾"][i % 4]} {link.title}
-              </span>
-            </div>
+              {link.title}
+            </a>
           ))}
         </div>
 
-        <p className="text-[10px] mt-8 text-orange-300">
-          ♡ sweethe.art ♡
-        </p>
+        <p className="text-xs text-gray-400 mt-10">made with ♡ by sweethe.art</p>
       </div>
     </div>
   );
 }
-

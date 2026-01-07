@@ -35,9 +35,11 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
     bio: userProfile.bio || "",
     avatar: userProfile.avatarUrl,
     theme: userProfile.theme || "pink",
+    template: userProfile.template || "minimal",
     buttonStyle: userProfile.buttonStyle || "rounded",
     font: userProfile.font || "mono",
     showSocials: userProfile.showSocials ?? true,
+    isPro: false,
     links: links.map((l) => ({
       id: l.id,
       title: l.title,
