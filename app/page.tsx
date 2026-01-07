@@ -62,9 +62,9 @@ export default function Home() {
           </p>
 
           <h1 className="text-[15vw] sm:text-[12vw] md:text-[10vw] font-bold leading-[0.85] tracking-tighter mb-8">
-            <span>ONE</span>
+            <span className="terminal-text">ONE</span>
             <br />
-            <span>LINK</span>
+            <span className="terminal-text">LINK</span>
           </h1>
 
           <div className="h-20">
