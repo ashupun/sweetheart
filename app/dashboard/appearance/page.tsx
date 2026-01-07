@@ -87,8 +87,8 @@ export default function AppearancePage() {
                   key={theme.id}
                   onClick={() => setSelectedTheme(theme.id)}
                   className={`flex items-center gap-2 px-3 py-2 border transition-colors ${selectedTheme === theme.id
-                      ? "border-pink-500 text-pink-500"
-                      : "border-gray-200 dark:border-gray-800 text-gray-500 hover:border-gray-300"
+                    ? "border-pink-500 text-pink-500"
+                    : "border-gray-200 dark:border-gray-800 text-gray-500 hover:border-gray-300"
                     }`}
                 >
                   <span

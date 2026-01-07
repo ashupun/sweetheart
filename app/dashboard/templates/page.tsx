@@ -55,8 +55,8 @@ export default function TemplatesPage() {
                                     onClick={() => handleApplyTemplate(template.id)}
                                     disabled={applying === template.id}
                                     className={`w-full flex items-center justify-between py-4 px-4 border transition-colors text-left ${selectedTemplate === template.id
-                                            ? "border-pink-500 bg-pink-50 dark:bg-pink-500/5"
-                                            : "border-gray-200 dark:border-gray-800 hover:border-gray-300"
+                                        ? "border-pink-500 bg-pink-50 dark:bg-pink-500/5"
+                                        : "border-gray-200 dark:border-gray-800 hover:border-gray-300"
                                         }`}
                                 >
                                     <div className="flex items-center gap-4">
