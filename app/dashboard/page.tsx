@@ -6,6 +6,7 @@ import { Header } from "../components/header";
 import { Toggle } from "../components/toggle";
 import { Loading } from "../components/loading";
 import { DashboardLayout } from "../components/layouts";
+import { useSidebarWidth } from "../components/sidebar";
 import { getLinks, addLink, deleteLink, toggleLink, updateLink, getProfileData } from "./actions";
 import type { Link as LinkType, Profile } from "@/lib/types";
 
@@ -64,12 +65,14 @@ export default function Dashboard() {
     }
   };
 
+  const sidebarWidth = useSidebarWidth();
+
   if (loading) return <Loading />;
 
   return (
     <DashboardLayout>
       <Sidebar active="links" username={profile?.username} />
-      <div className="lg:ml-56 min-h-screen">
+      <div className={`${sidebarWidth} min-h-screen transition-all duration-200`}>
         <Header title="links" username={profile?.username} />
         <main className="p-6 lg:p-8 max-w-2xl">
           {!isAdding ? (

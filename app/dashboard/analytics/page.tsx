@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Sidebar } from "../../components/sidebar";
+import { Sidebar, useSidebarWidth } from "../../components/sidebar";
 import { Header } from "../../components/header";
 import { Loading } from "../../components/loading";
 import { DashboardLayout } from "../../components/layouts";
@@ -38,12 +38,14 @@ export default function AnalyticsPage() {
     load();
   }, []);
 
+  const sidebarWidth = useSidebarWidth();
+
   if (loading) return <Loading />;
 
   return (
     <DashboardLayout>
       <Sidebar active="analytics" username={profile?.username} />
-      <div className="lg:ml-56 min-h-screen">
+      <div className={`${sidebarWidth} min-h-screen transition-all duration-200`}>
         <Header title="analytics" username={profile?.username} />
         <main className="p-6 lg:p-8 max-w-2xl">
           <section className="mb-12">

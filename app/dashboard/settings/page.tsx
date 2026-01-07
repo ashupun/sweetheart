@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Sidebar } from "../../components/sidebar";
+import { Sidebar, useSidebarWidth } from "../../components/sidebar";
 import { Header } from "../../components/header";
 import { Loading } from "../../components/loading";
 import { DashboardLayout } from "../../components/layouts";
@@ -54,12 +54,14 @@ export default function SettingsPage() {
     setSaving(false);
   };
 
+  const sidebarWidth = useSidebarWidth();
+
   if (loading) return <Loading />;
 
   return (
     <DashboardLayout>
       <Sidebar active="settings" username={profile?.username} />
-      <div className="lg:ml-56 min-h-screen">
+      <div className={`${sidebarWidth} min-h-screen transition-all duration-200`}>
         <Header title="settings" username={profile?.username} />
         <main className="p-6 lg:p-8 max-w-2xl">
           {error && <p className="text-pink-500 text-sm mb-6">{error}</p>}

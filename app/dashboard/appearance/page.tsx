@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Sidebar } from "../../components/sidebar";
+import { Sidebar, useSidebarWidth } from "../../components/sidebar";
 import { Header } from "../../components/header";
 import { Toggle } from "../../components/toggle";
 import { Loading } from "../../components/loading";
@@ -63,12 +63,14 @@ export default function AppearancePage() {
     setSaving(false);
   };
 
+  const sidebarWidth = useSidebarWidth();
+
   if (loading) return <Loading />;
 
   return (
     <DashboardLayout>
       <Sidebar active="appearance" username={profile?.username} />
-      <div className="lg:ml-56 min-h-screen">
+      <div className={`${sidebarWidth} min-h-screen transition-all duration-200`}>
         <Header title="appearance" username={profile?.username} />
         <main className="p-6 lg:p-8 max-w-2xl">
           <section className="mb-12">

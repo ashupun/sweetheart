@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { signOut } from "@/lib/client";
@@ -11,61 +12,150 @@ interface SidebarProps {
 }
 
 export function Sidebar({ active, username }: SidebarProps) {
+  const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("sidebar-collapsed");
+    if (saved === "true") setCollapsed(true);
+  }, []);
+
+  const toggleCollapsed = () => {
+    const newState = !collapsed;
+    setCollapsed(newState);
+    localStorage.setItem("sidebar-collapsed", String(newState));
+  };
+
   const navItems = [
-    { id: "links", href: "/dashboard", label: "links", icon: "M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" },
-    { id: "appearance", href: "/dashboard/appearance", label: "appearance", icon: "M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" },
-    { id: "templates", href: "/dashboard/templates", label: "templates", icon: "M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" },
-    { id: "analytics", href: "/dashboard/analytics", label: "analytics", icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" },
-    { id: "settings", href: "/dashboard/settings", label: "settings", icon: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" },
+    { id: "links", href: "/dashboard", label: "links" },
+    { id: "appearance", href: "/dashboard/appearance", label: "appearance" },
+    { id: "templates", href: "/dashboard/templates", label: "templates" },
+    { id: "analytics", href: "/dashboard/analytics", label: "analytics" },
+    { id: "settings", href: "/dashboard/settings", label: "settings" },
   ];
 
-  return (
-    <div className="fixed left-0 top-0 h-full w-56 bg-[#fdf5f3] dark:bg-[#1a1a1a] border-r border-gray-200 dark:border-gray-800 p-6 hidden lg:flex flex-col transition-colors">
-      <Link href="/" className="flex items-center gap-2 mb-8">
-        <Image src="/sweethearticon.png" alt="sweetheart" width={24} height={24} className="rounded" />
-        <span className="text-lg font-bold text-[#1a1a1a] dark:text-white">
-          sweethe<span className="text-pink-500">.</span>art
-        </span>
-      </Link>
+  const SidebarContent = ({ mobile = false }: { mobile?: boolean }) => (
+    <>
+      <div className="flex items-center justify-between mb-8">
+        <Link href="/" className="flex items-center gap-2">
+          <Image src="/sweethearticon.png" alt="sweetheart" width={20} height={20} className="rounded" />
+          {(!collapsed || mobile) && (
+            <span className="text-sm font-medium text-[#1a1a1a] dark:text-white">
+              sweethe<span className="text-pink-500">.</span>art
+            </span>
+          )}
+        </Link>
+        {!mobile && (
+          <button
+            onClick={toggleCollapsed}
+            className="text-gray-400 hover:text-pink-500 transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {collapsed ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+              )}
+            </svg>
+          </button>
+        )}
+      </div>
 
       <nav className="space-y-1 flex-1">
         {navItems.map((item) => (
           <Link
             key={item.id}
             href={item.href}
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+            onClick={() => mobile && setMobileOpen(false)}
+            className={`flex items-center gap-3 py-2 text-sm transition-colors ${
               active === item.id
-                ? "bg-pink-500 text-white"
-                : "text-gray-600 dark:text-gray-400 hover:text-pink-500 dark:hover:text-pink-400"
+                ? "text-pink-500"
+                : "text-gray-500 dark:text-gray-400 hover:text-pink-500"
             }`}
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
-            </svg>
-            {item.label}
+            {(!collapsed || mobile) ? item.label : item.label.charAt(0)}
+            {active === item.id && (!collapsed || mobile) && <span className="text-pink-500">←</span>}
           </Link>
         ))}
       </nav>
 
-      <div className="pt-4 border-t border-gray-200 dark:border-gray-800 space-y-4">
-        {username && (
-          <div>
-            <p className="text-xs text-gray-400 dark:text-gray-600 mb-1">your page</p>
-            <a href={`/${username}`} target="_blank" className="text-sm text-pink-500 hover:text-pink-400 transition-colors">
-              sweethe.art/{username} ↗
-            </a>
-          </div>
+      <div className="pt-4 border-t border-gray-200 dark:border-gray-800 space-y-3">
+        {username && (!collapsed || mobile) && (
+          <a
+            href={`/${username}`}
+            target="_blank"
+            className="block text-xs text-pink-500 hover:text-pink-400 transition-colors truncate"
+          >
+            /{username} ↗
+          </a>
         )}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-2">
           <button
             onClick={() => signOut({ fetchOptions: { onSuccess: () => { window.location.href = "/"; } } })}
-            className="text-xs text-gray-400 dark:text-gray-600 hover:text-pink-500 transition-colors"
+            className="text-xs text-gray-400 hover:text-pink-500 transition-colors"
           >
-            sign out
+            {(!collapsed || mobile) ? "sign out" : "×"}
           </button>
           <ThemeToggle />
         </div>
       </div>
-    </div>
+    </>
   );
+
+  return (
+    <>
+      <button
+        onClick={() => setMobileOpen(true)}
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 text-gray-500 hover:text-pink-500 transition-colors"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      {mobileOpen && (
+        <div className="lg:hidden fixed inset-0 z-50">
+          <div className="absolute inset-0 bg-black/20" onClick={() => setMobileOpen(false)} />
+          <div className="absolute left-0 top-0 h-full w-56 bg-[#fdf5f3] dark:bg-[#1a1a1a] border-r border-gray-200 dark:border-gray-800 p-6 flex flex-col">
+            <button
+              onClick={() => setMobileOpen(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-pink-500"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <SidebarContent mobile />
+          </div>
+        </div>
+      )}
+
+      <div
+        className={`fixed left-0 top-0 h-full bg-[#fdf5f3] dark:bg-[#1a1a1a] border-r border-gray-200 dark:border-gray-800 p-6 hidden lg:flex flex-col transition-all duration-200 ${
+          collapsed ? "w-16" : "w-48"
+        }`}
+      >
+        <SidebarContent />
+      </div>
+    </>
+  );
+}
+
+export function useSidebarWidth() {
+  const [collapsed, setCollapsed] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("sidebar-collapsed");
+    if (saved === "true") setCollapsed(true);
+
+    const handleStorage = () => {
+      const saved = localStorage.getItem("sidebar-collapsed");
+      setCollapsed(saved === "true");
+    };
+
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
+
+  return collapsed ? "lg:ml-16" : "lg:ml-48";
 }

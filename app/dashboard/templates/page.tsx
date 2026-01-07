@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Sidebar } from "../../components/sidebar";
+import { Sidebar, useSidebarWidth } from "../../components/sidebar";
 import { Header } from "../../components/header";
 import { Loading } from "../../components/loading";
 import { DashboardLayout } from "../../components/layouts";
@@ -35,6 +35,8 @@ export default function TemplatesPage() {
         setApplying(null);
     };
 
+    const sidebarWidth = useSidebarWidth();
+
     if (loading) return <Loading />;
 
     const freeTemplates = templateList.filter(t => !t.isPro);
@@ -43,7 +45,7 @@ export default function TemplatesPage() {
     return (
         <DashboardLayout>
             <Sidebar active="templates" username={profile?.username} />
-            <div className="lg:ml-56 min-h-screen">
+            <div className={`${sidebarWidth} min-h-screen transition-all duration-200`}>
                 <Header title="templates" username={profile?.username} />
                 <main className="p-6 lg:p-8 max-w-2xl">
                     <section className="mb-12">
