@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Poppins, Fredoka } from "next/font/google";
 import { Databuddy } from "@databuddy/sdk/react";
 import "./globals.css";
@@ -54,10 +54,13 @@ export const metadata: Metadata = {
     apple: "/sweethearticon.png",
   },
   manifest: "/manifest.json",
-  themeColor: "#ec4899",
   other: {
     "msapplication-TileColor": "#ec4899",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#ec4899",
 };
 
 const themeScript = `

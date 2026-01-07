@@ -73,8 +73,8 @@ export default function Dashboard() {
     const link = links.find(l => l.id === editingField.id);
     if (!link) return;
 
-    const updates = editingField.field === "title" 
-      ? { title: editValue } 
+    const updates = editingField.field === "title"
+      ? { title: editValue }
       : { url: editValue };
 
     await updateLink(editingField.id, updates);
