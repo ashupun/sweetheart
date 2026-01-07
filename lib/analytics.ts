@@ -170,3 +170,147 @@ export async function getLinkClicks(username: string, days = 30) {
   }
 }
 
+export async function getCountries(username: string, days = 30) {
+  if (!DATABUDDY_API_KEY || !DATABUDDY_WEBSITE_ID) {
+    return null;
+  }
+
+  const endDate = new Date().toISOString().split("T")[0];
+  const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+
+  try {
+    const response = await fetch(`${API_BASE}/query`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": DATABUDDY_API_KEY,
+      },
+      body: JSON.stringify({
+        type: "countries",
+        website_id: DATABUDDY_WEBSITE_ID,
+        filters: {
+          date_from: startDate,
+          date_to: endDate,
+          page: `/${username}`,
+        },
+        limit: 10,
+      }),
+      next: { revalidate: 300 },
+    });
+
+    if (!response.ok) return null;
+
+    return response.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function getReferrers(username: string, days = 30) {
+  if (!DATABUDDY_API_KEY || !DATABUDDY_WEBSITE_ID) {
+    return null;
+  }
+
+  const endDate = new Date().toISOString().split("T")[0];
+  const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+
+  try {
+    const response = await fetch(`${API_BASE}/query`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": DATABUDDY_API_KEY,
+      },
+      body: JSON.stringify({
+        type: "referrers",
+        website_id: DATABUDDY_WEBSITE_ID,
+        filters: {
+          date_from: startDate,
+          date_to: endDate,
+          page: `/${username}`,
+        },
+        limit: 10,
+      }),
+      next: { revalidate: 300 },
+    });
+
+    if (!response.ok) return null;
+
+    return response.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function getDevices(username: string, days = 30) {
+  if (!DATABUDDY_API_KEY || !DATABUDDY_WEBSITE_ID) {
+    return null;
+  }
+
+  const endDate = new Date().toISOString().split("T")[0];
+  const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+
+  try {
+    const response = await fetch(`${API_BASE}/query`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": DATABUDDY_API_KEY,
+      },
+      body: JSON.stringify({
+        type: "devices",
+        website_id: DATABUDDY_WEBSITE_ID,
+        filters: {
+          date_from: startDate,
+          date_to: endDate,
+          page: `/${username}`,
+        },
+        limit: 10,
+      }),
+      next: { revalidate: 300 },
+    });
+
+    if (!response.ok) return null;
+
+    return response.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function getBrowsers(username: string, days = 30) {
+  if (!DATABUDDY_API_KEY || !DATABUDDY_WEBSITE_ID) {
+    return null;
+  }
+
+  const endDate = new Date().toISOString().split("T")[0];
+  const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+
+  try {
+    const response = await fetch(`${API_BASE}/query`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": DATABUDDY_API_KEY,
+      },
+      body: JSON.stringify({
+        type: "browsers",
+        website_id: DATABUDDY_WEBSITE_ID,
+        filters: {
+          date_from: startDate,
+          date_to: endDate,
+          page: `/${username}`,
+        },
+        limit: 10,
+      }),
+      next: { revalidate: 300 },
+    });
+
+    if (!response.ok) return null;
+
+    return response.json();
+  } catch {
+    return null;
+  }
+}
+
