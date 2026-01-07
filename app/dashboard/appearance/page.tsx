@@ -7,8 +7,8 @@ import { Header } from "../../components/header";
 import { Toggle } from "../../components/toggle";
 import { Loading } from "../../components/loading";
 import { DashboardLayout } from "../../components/layouts";
-import { getProfileData, getLinks, updateProfile } from "../actions";
-import type { Profile, Link as LinkType } from "@/lib/types";
+import { getProfileData, updateProfile } from "../actions";
+import type { Profile } from "@/lib/types";
 
 const themes = [
   { id: "pink", name: "pink" },
