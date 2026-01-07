@@ -16,8 +16,43 @@ const fredoka = Fredoka({
 });
 
 export const metadata: Metadata = {
-  title: "Sweetheart | Your Cute Link-in-Bio",
-  description: "Create your dreamy pink profile page. Perfect for girlies, gamers, and pink business owners.",
+  title: {
+    default: "sweetheart | your cute link-in-bio",
+    template: "%s | sweetheart",
+  },
+  description: "create your dreamy profile page. the prettiest link-in-bio for everyone ♡",
+  keywords: ["link in bio", "linktree alternative", "profile page", "social links", "aesthetic", "cute"],
+  authors: [{ name: "sweetheart", url: "https://sweethe.art" }],
+  creator: "sweetheart",
+  metadataBase: new URL("https://sweethe.art"),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://sweethe.art",
+    siteName: "sweetheart",
+    title: "sweetheart | your cute link-in-bio",
+    description: "create your dreamy profile page. the prettiest link-in-bio for everyone ♡",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "sweetheart - your cute link-in-bio",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "sweetheart | your cute link-in-bio",
+    description: "create your dreamy profile page. the prettiest link-in-bio for everyone ♡",
+    images: ["/og.png"],
+    creator: "@ashubun",
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/manifest.json",
 };
 
 const themeScript = `

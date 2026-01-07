@@ -1,0 +1,22 @@
+{
+  "name": "sweetheart",
+  "short_name": "sweetheart",
+  "description": "your cute link-in-bio",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fdf5f3",
+  "theme_color": "#ec4899",
+  "icons": [
+    {
+      "src": "/sweethearticon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/sweethearticon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+
