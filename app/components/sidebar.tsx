@@ -6,7 +6,7 @@ import Image from "next/image";
 import { signOut } from "@/lib/client";
 
 interface SidebarProps {
-  active: "links" | "appearance" | "templates" | "analytics" | "settings";
+  active: "links" | "appearance" | "templates" | "analytics" | "misc" | "settings";
   username?: string;
 }
 
@@ -15,6 +15,7 @@ const navItems = [
   { id: "appearance", href: "/dashboard/appearance", label: "appearance" },
   { id: "templates", href: "/dashboard/templates", label: "templates" },
   { id: "analytics", href: "/dashboard/analytics", label: "analytics" },
+  { id: "misc", href: "/dashboard/misc", label: "misc" },
   { id: "settings", href: "/dashboard/settings", label: "settings" },
 ];
 
