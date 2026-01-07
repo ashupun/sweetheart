@@ -130,7 +130,7 @@ export default function Dashboard() {
                         </svg>
                       </button>
                     </div>
-                    <Toggle enabled={link.enabled} onChange={() => handleToggleLink(link.id, link.enabled)} />
+                    <Toggle enabled={link.enabled ?? false} onChange={() => handleToggleLink(link.id, link.enabled ?? false)} />
                   </div>
                 </div>
               ))}
