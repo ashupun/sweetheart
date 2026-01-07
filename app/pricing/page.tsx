@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ThemeToggle } from "../components/ThemeToggle";
+import { Footer } from "../components/footer";
 
 export default function PricingPage() {
   return (
@@ -116,10 +117,8 @@ export default function PricingPage() {
           </details>
         </div>
 
-        <p className="text-center text-xs text-gray-400 mt-12">
-          questions? <a href="https://discord.gg/ZxK7XmHyBG" target="_blank" rel="noopener noreferrer" className="text-pink-500 hover:text-pink-400">join our discord</a>
-        </p>
       </main>
+      <Footer />
     </div>
   );
 }
