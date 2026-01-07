@@ -5,7 +5,19 @@ import Image from "next/image";
 import { useState, useMemo } from "react";
 import { ThemeToggle } from "../components/ThemeToggle";
 
-const sections = [
+interface DocItem {
+  id: string;
+  title: string;
+  pro?: boolean;
+}
+
+interface Section {
+  id: string;
+  title: string;
+  items: DocItem[];
+}
+
+const sections: Section[] = [
   {
     id: "getting-started",
     title: "getting started",
@@ -545,7 +557,7 @@ join our discord and open a support ticket with:
   },
 };
 
-const allItems = sections.flatMap(s => s.items.map(item => ({ ...item, section: s.title, pro: 'pro' in item ? item.pro : false })));
+const allItems = sections.flatMap(s => s.items.map(item => ({ ...item, section: s.title })));
 
 export default function DocsPage() {
   const [activeDoc, setActiveDoc] = useState("intro");
@@ -647,14 +659,13 @@ export default function DocsPage() {
                     <button
                       key={item.id}
                       onClick={() => { setActiveDoc(item.id); setMobileNav(false); }}
-                      className={`w-full text-left py-1.5 text-sm transition-colors flex items-center gap-2 ${
-                        activeDoc === item.id
+                      className={`w-full text-left py-1.5 text-sm transition-colors flex items-center gap-2 ${activeDoc === item.id
                           ? "text-pink-500"
                           : "text-gray-500 hover:text-[#1a1a1a] dark:hover:text-white"
-                      }`}
+                        }`}
                     >
                       {item.title}
-                      {'pro' in item && item.pro && (
+                      {item.pro && (
                         <span className="text-[9px] px-1 py-0.5 bg-pink-100 dark:bg-pink-500/20 text-pink-500 rounded">
                           pro
                         </span>
