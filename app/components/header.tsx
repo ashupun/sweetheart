@@ -10,24 +10,23 @@ interface HeaderProps {
 
 export function Header({ title, username }: HeaderProps) {
     return (
-        <header className="sticky top-0 z-20 bg-[#fdf5f3]/95 dark:bg-[#1a1a1a]/95 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800 px-6 lg:px-8 py-4">
-            <div className="flex items-center justify-between">
+        <header className="sticky top-0 z-20 h-[57px] bg-[#fdf5f3]/95 dark:bg-[#1a1a1a]/95 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800 px-6 flex items-center">
+            <div className="flex items-center justify-between w-full">
                 <div className="lg:hidden">
-                    <Link href="/" className="text-lg font-bold text-[#1a1a1a] dark:text-white">
+                    <Link href="/" className="text-sm font-medium text-[#1a1a1a] dark:text-white">
                         sweethe<span className="text-pink-500">.</span>art
                     </Link>
                 </div>
-                <h1 className="text-sm text-gray-500 dark:text-gray-400 hidden lg:block">{title}</h1>
+                <p className="text-sm text-gray-400 hidden lg:block">{title}</p>
                 <div className="flex items-center gap-4">
-                    <ThemeToggle />
                     {username && (
-                        <a href={`/${username}`} target="_blank" className="text-xs text-pink-500 hover:text-pink-400 transition-colors">
+                        <a href={`/${username}`} target="_blank" className="text-xs text-pink-500 hover:text-pink-400 transition-colors hidden sm:block">
                             preview ↗
                         </a>
                     )}
+                    <ThemeToggle />
                 </div>
             </div>
         </header>
     );
 }
-
