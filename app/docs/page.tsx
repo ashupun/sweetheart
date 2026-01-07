@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { ThemeToggle } from "../components/ThemeToggle";
 
@@ -9,162 +10,332 @@ const sections = [
     id: "getting-started",
     title: "getting started",
     items: [
-      { id: "create-account", title: "create your account" },
-      { id: "setup-profile", title: "setup your profile" },
-      { id: "add-links", title: "add your links" },
+      { id: "intro", title: "what is sweetheart?" },
+      { id: "create-account", title: "create account" },
+      { id: "setup-profile", title: "setup profile" },
+      { id: "add-links", title: "add links" },
+      { id: "share", title: "share your page" },
     ],
   },
   {
     id: "customization",
     title: "customization",
     items: [
-      { id: "templates", title: "choosing a template" },
+      { id: "templates", title: "templates" },
       { id: "themes", title: "color themes" },
-      { id: "fonts", title: "typography" },
+      { id: "fonts", title: "fonts" },
+      { id: "buttons", title: "button styles" },
+      { id: "socials", title: "social icons" },
     ],
   },
   {
-    id: "pro-features",
+    id: "pro",
     title: "pro features",
     items: [
-      { id: "backgrounds", title: "custom backgrounds" },
-      { id: "music", title: "profile music" },
-      { id: "animations", title: "animations" },
+      { id: "backgrounds", title: "custom backgrounds", pro: true },
+      { id: "music", title: "profile music", pro: true },
+      { id: "branding", title: "remove branding", pro: true },
+      { id: "pro-templates", title: "pro templates", pro: true },
+    ],
+  },
+  {
+    id: "analytics",
+    title: "analytics",
+    items: [
+      { id: "views", title: "page views" },
+      { id: "clicks", title: "link clicks" },
+      { id: "insights", title: "visitor insights" },
+    ],
+  },
+  {
+    id: "account",
+    title: "account",
+    items: [
+      { id: "email", title: "change email" },
+      { id: "password", title: "change password" },
+      { id: "delete", title: "delete account" },
     ],
   },
 ];
 
-const docs: Record<string, { title: string; content: string; pro?: boolean }> = {
+const docs: Record<string, { title: string; content: string }> = {
+  "intro": {
+    title: "what is sweetheart?",
+    content: `sweetheart is a link-in-bio platform designed with aesthetics in mind ♡
+
+**why sweetheart?**
+we built sweetheart because existing link-in-bio tools felt generic and boring. we wanted something that feels personal, cute, and actually represents you.
+
+**key features**
+• beautiful templates designed for creatives
+• clean, minimal interface
+• fast and mobile-friendly
+• privacy-focused analytics
+• no ads, ever
+
+**who is it for?**
+anyone who wants a cute, customizable link page:
+• content creators
+• artists & designers
+• musicians
+• small business owners
+• or just anyone who wants one link to rule them all ✨`,
+  },
   "create-account": {
-    title: "create your account",
-    content: `signing up for sweetheart is quick and easy ♡
+    title: "create account",
+    content: `getting started takes less than a minute ♡
 
-1. go to **sweethe.art/signup**
-2. enter your email and create a password
-3. verify your email (check your inbox!)
-4. you're in! ✨
+**steps**
+1. go to sweethe.art/signup
+2. enter your email address
+3. create a password (min 8 characters)
+4. choose your username
+5. check your email for verification link
+6. click the link and you're in!
 
-your account gives you access to:
-- your own profile page at sweethe.art/username
-- unlimited links
-- 6 beautiful templates
-- 9 color themes
-- and so much more...`,
+**choosing a username**
+• lowercase letters, numbers, underscores only
+• minimum 3 characters
+• this becomes your url: sweethe.art/username
+• pick wisely - changing it later affects your links
+
+**tips**
+• use a real email (you'll need it for password reset)
+• choose a memorable username
+• keep your password secure`,
   },
   "setup-profile": {
-    title: "setup your profile",
-    content: `make your profile uniquely you ♡
+    title: "setup profile",
+    content: `your profile is how visitors see you ♡
 
 **display name**
-this is what visitors see at the top of your page. can be your real name, username, or anything you want!
-
-**username**
-your unique url: sweethe.art/username
-- lowercase letters, numbers, and underscores only
-- minimum 3 characters
+the name shown at the top of your page. can be:
+• your real name
+• a nickname
+• your brand name
+• anything you want!
 
 **bio**
-tell people about yourself in 150 characters or less. emojis encouraged! ✨
+150 characters to describe yourself. make it count!
+• keep it short and sweet
+• emojis are encouraged ✨
+• update it whenever you want
 
 **avatar**
-your profile picture shows in a circle. we recommend square images for best results.`,
+your profile picture. tips:
+• square images work best
+• minimum 200x200 pixels
+• supports jpg, png, gif
+• shows as a circle on your page`,
   },
   "add-links": {
-    title: "add your links",
+    title: "add links",
     content: `links are the heart of your page ♡
 
 **adding a link**
-1. go to your dashboard
-2. click "add new link"
-3. enter a title and url
-4. click "add link"
+1. go to dashboard → links
+2. click "+ add new link"
+3. enter a title (what visitors see)
+4. enter the url (where they go)
+5. click "add link"
 
 **managing links**
-- drag to reorder (coming soon)
-- toggle visibility with the switch
-- edit anytime by clicking the pencil icon
-- delete links you no longer need
+• toggle visibility with the switch
+• edit by clicking the pencil icon
+• delete with the trash icon
+• drag to reorder (coming soon)
 
-**tips**
-- keep titles short and clear
-- put your most important links first
-- use emojis to make them stand out ✨`,
+**link tips**
+• keep titles short (under 30 chars)
+• most important links go first
+• use emojis to stand out ✨
+• test your links after adding!
+
+**url format**
+• include https:// for external links
+• we auto-detect if you forget
+• supports any valid url`,
+  },
+  "share": {
+    title: "share your page",
+    content: `time to share your link with the world ♡
+
+**your url**
+sweethe.art/yourusername
+
+**where to use it**
+• instagram bio
+• twitter/x bio
+• tiktok bio
+• youtube about section
+• email signatures
+• anywhere you want!
+
+**tips for sharing**
+• add it to all your social bios
+• mention it in your content
+• include it in your email signature
+• share it with friends
+
+**qr codes**
+qr code generation coming soon! perfect for:
+• business cards
+• posters
+• merch
+• events`,
   },
   "templates": {
-    title: "choosing a template",
-    content: `templates change the entire vibe of your page ♡
+    title: "templates",
+    content: `templates define the overall style of your page ♡
 
-**available templates**
+**free templates**
 
-*minimal* - clean lines, lots of whitespace. perfect for a professional look.
+*minimal*
+clean lines, lots of whitespace. perfect for a professional look.
 
-*aesthetic* - dreamy blurs and sparkles. for the soft girl in you ✧
+*aesthetic*
+dreamy vibes with soft gradients. for the soft girl aesthetic ✧
 
-*glass* - modern glassmorphism with frosted cards. sleek and elegant.
+*glass*
+modern glassmorphism with frosted effects. sleek and elegant.
 
-*brutalist* - bold, raw, and unapologetic. makes a statement.
+*brutalist*
+bold, raw design. makes a statement.
 
-*kawaii* - super cute with emojis and decorations. embrace the cuteness!
+*kawaii*
+super cute with playful elements. embrace the cuteness!
 
-*y2k* - retro cyber vibes with neon glows. back to the future.
+*y2k*
+retro cyber vibes. back to the 2000s.
 
-**changing templates**
+**pro templates**
+upgrade to pro to unlock exclusive templates with unique designs and animations.
+
+**switching templates**
 1. go to dashboard → templates
 2. click any template to preview
-3. click "apply style" to save`,
+3. changes save automatically`,
   },
   "themes": {
     title: "color themes",
-    content: `colors set the mood ♡
+    content: `colors set the mood of your page ♡
 
 **available themes**
-- pink dreams - classic sweetheart pink
-- lavender - soft purple dreams
-- mint - fresh and cool
-- peach - warm and cozy
-- ocean - calm blue vibes
-- rose gold - elegant pink
-- midnight - dark and moody
-- sunset - warm reds
-- forest - natural greens
+• pink - classic sweetheart pink
+• lavender - soft purple dreams
+• mint - fresh and cool
+• peach - warm and cozy
+• ocean - calm blue vibes
+• rose - elegant blush tones
+• midnight - dark and moody
+• sunset - warm oranges
+• forest - natural greens
 
 **changing themes**
 1. go to dashboard → appearance
-2. click any color palette
-3. see the live preview
-4. click "save changes"`,
+2. click any color
+3. see instant preview
+4. click "save changes"
+
+**theme tips**
+• match your brand colors
+• consider accessibility
+• test in light and dark mode
+• your template affects how colors appear`,
   },
   "fonts": {
-    title: "typography",
-    content: `fonts add personality ♡
+    title: "fonts",
+    content: `fonts add personality to your page ♡
 
 **available fonts**
 
-*mono* - clean monospace font. techy and modern.
+*mono*
+clean monospace font. techy, modern vibes.
+best for: minimal, brutalist templates
 
-*sans* - friendly sans-serif. warm and approachable.
+*sans*
+friendly sans-serif. warm and approachable.
+best for: aesthetic, kawaii templates
 
-**tips**
-- mono works great with minimal and brutalist templates
-- sans pairs well with aesthetic and kawaii
-- preview both before deciding!`,
+*serif*
+elegant serif font. classic and refined.
+best for: professional pages
+
+**changing fonts**
+1. go to dashboard → appearance
+2. select a font
+3. preview changes live
+4. save when happy`,
+  },
+  "buttons": {
+    title: "button styles",
+    content: `customize how your link buttons look ♡
+
+**available styles**
+
+*rounded*
+soft, rounded corners. friendly and approachable.
+
+*pill*
+fully rounded ends. modern and sleek.
+
+*square*
+sharp corners. bold and direct.
+
+**changing button style**
+1. go to dashboard → appearance
+2. select button style
+3. see live preview
+4. save changes`,
+  },
+  "socials": {
+    title: "social icons",
+    content: `show your social presence ♡
+
+**supported platforms**
+• instagram
+• twitter/x
+• tiktok
+• youtube
+• github
+• discord
+• twitch
+• linkedin
+• spotify
+• and more...
+
+**adding socials**
+1. go to dashboard → settings
+2. add your social urls
+3. icons appear below your bio
+
+**display options**
+• show/hide social icons
+• toggle in appearance settings
+• icons adapt to your theme`,
   },
   "backgrounds": {
     title: "custom backgrounds",
-    content: `make your page truly unique with custom backgrounds ♡
+    content: `make your page truly unique ♡
 
 **pro feature** - $5/month
 
-with pro, you can:
-- upload custom background images
-- choose from animated backgrounds
-- adjust opacity and blur
+**what you can do**
+• upload custom background images
+• choose animated backgrounds
+• adjust blur and opacity
+• gradient overlays
 
-**best practices**
-- use high-quality images (at least 1920x1080)
-- lighter images work better with light themes
-- test on mobile too!`,
-    pro: true,
+**image requirements**
+• minimum 1920x1080 recommended
+• max file size: 5mb
+• formats: jpg, png, webp
+
+**tips**
+• lighter images for light themes
+• test on mobile
+• subtle patterns work well
+• don't distract from your links`,
   },
   "music": {
     title: "profile music",
@@ -172,151 +343,336 @@ with pro, you can:
 
 **pro feature** - $5/month
 
-share your vibe with background music!
-
 **how it works**
-- visitors must click to enter (no autoplay)
-- music starts at 25% volume
-- they can pause/adjust anytime
+• visitors click to enter (no autoplay)
+• music starts at 25% volume
+• they can pause/adjust anytime
+• shows song title on page
 
 **adding music**
 1. upgrade to pro
-2. go to appearance → music
-3. paste a direct audio url (.mp3)
-4. save changes
+2. go to appearance settings
+3. paste direct audio url (.mp3)
+4. add song title
+5. save changes
 
 **tips**
-- choose something that represents you
-- instrumental tracks work best
-- keep file sizes small for fast loading`,
-    pro: true,
+• instrumental tracks work best
+• keep files under 5mb
+• consider your audience
+• choose something that represents you`,
   },
-  "animations": {
-    title: "animations",
-    content: `bring your page to life ♡
+  "branding": {
+    title: "remove branding",
+    content: `clean, unbranded pages ♡
 
 **pro feature** - $5/month
 
-add subtle animations to make your page feel alive:
+**what gets removed**
+• "made with sweetheart" badge
+• powered by text in footer
+• any sweetheart branding
 
-- floating background elements
-- smooth hover effects
-- entrance animations
-- particle effects
+**why remove it?**
+• cleaner look
+• more professional
+• full ownership feel
+• better for businesses
 
-coming soon: more animation options and customization!`,
-    pro: true,
+**how to remove**
+1. upgrade to pro
+2. go to settings
+3. toggle off branding
+4. save changes`,
+  },
+  "pro-templates": {
+    title: "pro templates",
+    content: `exclusive designs for pro users ♡
+
+**pro feature** - $5/month
+
+**what's special**
+• unique designs not available for free
+• advanced animations
+• special effects
+• early access to new templates
+
+**current pro templates**
+• neon - glowing cyberpunk vibes
+• soft - ultra-minimal ethereal
+• more coming soon...
+
+**how to access**
+1. upgrade to pro
+2. go to templates
+3. pro templates unlock automatically`,
+  },
+  "views": {
+    title: "page views",
+    content: `track your page performance ♡
+
+**what we track**
+• total page views
+• views over time
+• unique visitors
+
+**privacy note**
+we use privacy-focused analytics:
+• no cookies
+• no personal data
+• aggregate stats only
+• gdpr compliant
+
+**viewing stats**
+1. go to dashboard → analytics
+2. see your view count
+3. updated in real-time`,
+  },
+  "clicks": {
+    title: "link clicks",
+    content: `see which links perform best ♡
+
+**what we track**
+• total clicks per link
+• click-through rate
+• which links are popular
+
+**using click data**
+• put popular links higher
+• remove links nobody clicks
+• test different titles
+• optimize your page
+
+**viewing clicks**
+1. go to dashboard → analytics
+2. see clicks per link
+3. identify top performers`,
+  },
+  "insights": {
+    title: "visitor insights",
+    content: `understand your audience ♡
+
+**what we track**
+• referral sources (where visitors come from)
+• device types (mobile vs desktop)
+• browser info
+• geographic regions
+
+**privacy first**
+• no personal identification
+• aggregate data only
+• no tracking cookies
+• fully anonymous
+
+**using insights**
+• optimize for mobile if mostly mobile visitors
+• see which platforms drive traffic
+• understand your audience better`,
+  },
+  "email": {
+    title: "change email",
+    content: `update your email address ♡
+
+**how to change**
+currently, email changes require support assistance.
+
+**contact us**
+email hi@sweethe.art with:
+• your current email
+• your desired new email
+• your username
+
+**verification**
+• we'll verify your identity
+• send confirmation to both emails
+• update within 24 hours
+
+**why this process?**
+• security protection
+• prevent unauthorized changes
+• keep your account safe`,
+  },
+  "password": {
+    title: "change password",
+    content: `update your password ♡
+
+**change password**
+1. go to settings
+2. click "change" next to password
+3. or go to /forgot directly
+
+**reset via email**
+1. go to /forgot
+2. enter your email
+3. check inbox for reset link
+4. click link and set new password
+
+**password requirements**
+• minimum 8 characters
+• mix of letters and numbers recommended
+• don't reuse passwords
+
+**tips**
+• use a password manager
+• don't share your password
+• update regularly`,
+  },
+  "delete": {
+    title: "delete account",
+    content: `we're sad to see you go ♡
+
+**what gets deleted**
+• your profile page
+• all your links
+• your account data
+• your username (released)
+
+**what stays**
+• aggregate anonymous analytics
+• nothing personally identifiable
+
+**how to delete**
+1. go to dashboard → settings
+2. scroll to danger zone
+3. click "delete account"
+4. confirm deletion
+
+**important**
+• this cannot be undone
+• your username becomes available
+• cancel pro subscription first
+• export your data if needed`,
   },
 };
 
 export default function DocsPage() {
-  const [activeDoc, setActiveDoc] = useState("create-account");
+  const [activeDoc, setActiveDoc] = useState("intro");
+  const [mobileNav, setMobileNav] = useState(false);
   const currentDoc = docs[activeDoc];
+  const currentItem = sections.flatMap(s => s.items).find(i => i.id === activeDoc);
 
   return (
     <div className="min-h-screen bg-[#fdf5f3] dark:bg-[#1a1a1a] font-mono transition-colors">
-      <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 bg-[#fdf5f3]/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border-b border-gray-200/50 dark:border-gray-800/50">
-        <div className="flex items-center justify-between max-w-6xl mx-auto text-xs tracking-wide">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="font-medium text-[#1a1a1a] dark:text-white">
+      <nav className="h-[57px] px-6 flex items-center justify-between border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 bg-[#fdf5f3]/95 dark:bg-[#1a1a1a]/95 backdrop-blur-xl">
+        <div className="flex items-center gap-4">
+          <Link href="/" className="flex items-center gap-2">
+            <Image src="/sweethearticon.png" alt="" width={18} height={18} />
+            <span className="text-sm font-medium text-[#1a1a1a] dark:text-white">
               sweethe<span className="text-pink-500">.</span>art
-            </Link>
-            <span className="text-gray-400 dark:text-gray-600">/</span>
-            <span className="text-pink-500">docs</span>
-          </div>
-          <div className="flex items-center gap-6">
-            <Link href="/pricing" className="text-gray-500 hover:text-pink-500 transition-colors">pricing</Link>
-            <ThemeToggle />
-          </div>
+            </span>
+          </Link>
+          <span className="text-gray-300 dark:text-gray-700">/</span>
+          <span className="text-sm text-pink-500">docs</span>
+        </div>
+        <div className="flex items-center gap-6">
+          <Link href="/pricing" className="text-xs text-gray-400 hover:text-pink-500 transition-colors hidden sm:block">pricing</Link>
+          <Link href="/login" className="text-xs text-gray-400 hover:text-pink-500 transition-colors hidden sm:block">login</Link>
+          <button
+            onClick={() => setMobileNav(!mobileNav)}
+            className="lg:hidden text-gray-400 hover:text-pink-500"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+          <ThemeToggle />
         </div>
       </nav>
 
-      <div className="pt-20 flex">
-        <aside className="hidden lg:block w-64 fixed left-0 top-20 bottom-0 p-6 border-r border-gray-200 dark:border-gray-800 overflow-y-auto">
-          <nav className="space-y-6">
+      <div className="flex">
+        <aside className={`${mobileNav ? 'fixed inset-0 z-40 bg-[#fdf5f3] dark:bg-[#1a1a1a] pt-[57px]' : 'hidden'} lg:block lg:fixed lg:left-0 lg:top-[57px] lg:bottom-0 lg:w-56 lg:border-r lg:border-gray-200 lg:dark:border-gray-800 overflow-y-auto`}>
+          {mobileNav && (
+            <button
+              onClick={() => setMobileNav(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-pink-500 lg:hidden"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+          <nav className="p-6 space-y-6">
             {sections.map((section) => (
               <div key={section.id}>
-                <h3 className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-3">
+                <p className="text-[10px] uppercase tracking-wider text-gray-400 mb-3">
                   {section.title}
-                </h3>
-                <ul className="space-y-1">
+                </p>
+                <div className="space-y-1">
                   {section.items.map((item) => (
-                    <li key={item.id}>
-                      <button
-                        onClick={() => setActiveDoc(item.id)}
-                        className={`w-full text-left px-3 py-2 text-sm rounded-lg transition-colors ${
-                          activeDoc === item.id
-                            ? "bg-pink-50 dark:bg-pink-500/10 text-pink-500"
-                            : "text-gray-600 dark:text-gray-400 hover:text-pink-500 dark:hover:text-pink-400"
-                        }`}
-                      >
-                        {item.title}
-                        {docs[item.id]?.pro && (
-                          <span className="ml-2 text-[9px] px-1.5 py-0.5 bg-pink-100 dark:bg-pink-500/20 text-pink-500 rounded">
-                            pro
-                          </span>
-                        )}
-                      </button>
-                    </li>
+                    <button
+                      key={item.id}
+                      onClick={() => { setActiveDoc(item.id); setMobileNav(false); }}
+                      className={`w-full text-left py-1.5 text-sm transition-colors flex items-center gap-2 ${
+                        activeDoc === item.id
+                          ? "text-pink-500"
+                          : "text-gray-500 hover:text-[#1a1a1a] dark:hover:text-white"
+                      }`}
+                    >
+                      {item.title}
+                      {item.pro && (
+                        <span className="text-[9px] px-1 py-0.5 bg-pink-100 dark:bg-pink-500/20 text-pink-500 rounded">
+                          pro
+                        </span>
+                      )}
+                    </button>
                   ))}
-                </ul>
+                </div>
               </div>
             ))}
           </nav>
         </aside>
 
-        <main className="flex-1 lg:ml-64 p-6 lg:p-12">
-          <div className="max-w-2xl mx-auto">
-            {currentDoc?.pro && (
-              <div className="mb-6 p-4 bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-500/10 dark:to-purple-500/10 rounded-xl border border-pink-200 dark:border-pink-500/20">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs px-2 py-0.5 bg-pink-500 text-white rounded-full font-medium">pro</span>
-                  <span className="text-sm text-pink-600 dark:text-pink-400">this is a pro feature</span>
-                </div>
+        <main className="flex-1 lg:ml-56 px-6 py-12 max-w-2xl">
+          {currentItem?.pro && (
+            <div className="mb-6 px-3 py-2 border border-pink-500/30 bg-pink-50 dark:bg-pink-500/5 inline-flex items-center gap-2">
+              <span className="text-[10px] text-pink-500">pro feature</span>
+            </div>
+          )}
+
+          <h1 className="text-xl font-bold text-[#1a1a1a] dark:text-white mb-8">
+            {currentDoc?.title}
+          </h1>
+
+          <article className="space-y-4">
+            {currentDoc?.content.split("\n\n").map((paragraph, i) => (
+              <div key={i} className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                {paragraph.split("\n").map((line, j) => {
+                  if (line.startsWith("**") && line.endsWith("**")) {
+                    return (
+                      <p key={j} className="text-[#1a1a1a] dark:text-white font-medium mt-6 mb-2 first:mt-0">
+                        {line.slice(2, -2)}
+                      </p>
+                    );
+                  }
+                  if (line.startsWith("*") && line.endsWith("*")) {
+                    return (
+                      <p key={j} className="text-pink-500 mt-4 mb-1">
+                        {line.slice(1, -1)}
+                      </p>
+                    );
+                  }
+                  if (line.startsWith("• ")) {
+                    return <p key={j} className="pl-4 text-gray-500 dark:text-gray-400">{line}</p>;
+                  }
+                  if (line.match(/^\d\./)) {
+                    return <p key={j} className="pl-4 text-gray-500 dark:text-gray-400">{line}</p>;
+                  }
+                  return <p key={j}>{line}</p>;
+                })}
               </div>
-            )}
+            ))}
+          </article>
 
-            <h1 className="text-2xl font-bold text-[#1a1a1a] dark:text-white mb-8">
-              {currentDoc?.title}
-            </h1>
-
-            <div className="prose prose-sm dark:prose-invert max-w-none">
-              {currentDoc?.content.split("\n\n").map((paragraph, i) => (
-                <p key={i} className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
-                  {paragraph.split("\n").map((line, j) => (
-                    <span key={j}>
-                      {line.startsWith("**") && line.endsWith("**") ? (
-                        <strong className="text-[#1a1a1a] dark:text-white font-medium">
-                          {line.slice(2, -2)}
-                        </strong>
-                      ) : line.startsWith("*") && line.endsWith("*") ? (
-                        <em className="text-pink-500">{line.slice(1, -1)}</em>
-                      ) : line.startsWith("- ") ? (
-                        <span className="block pl-4">• {line.slice(2)}</span>
-                      ) : line.match(/^\d\./) ? (
-                        <span className="block pl-4">{line}</span>
-                      ) : (
-                        line
-                      )}
-                      {j < paragraph.split("\n").length - 1 && <br />}
-                    </span>
-                  ))}
-                </p>
-              ))}
-            </div>
-
-            <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
-              <p className="text-xs text-gray-400 dark:text-gray-500">
-                need help? reach out at{" "}
-                <a href="mailto:hi@sweethe.art" className="text-pink-500 hover:text-pink-400">
-                  hi@sweethe.art
-                </a>
-              </p>
-            </div>
+          <div className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between">
+            <p className="text-xs text-gray-400">
+              need help? <a href="mailto:hi@sweethe.art" className="text-pink-500 hover:text-pink-400">hi@sweethe.art</a>
+            </p>
+            <Link href="/signup" className="text-xs text-pink-500 hover:text-pink-400">
+              get started →
+            </Link>
           </div>
         </main>
       </div>
     </div>
   );
 }
-
