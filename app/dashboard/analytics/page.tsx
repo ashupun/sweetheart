@@ -23,13 +23,6 @@ interface AnalyticsData {
   value?: number;
 }
 
-interface PerformanceData {
-  lcp?: number;
-  fid?: number;
-  cls?: number;
-  ttfb?: number;
-}
-
 interface Analytics {
   username: string;
   profileViews: number;
@@ -109,29 +102,12 @@ function DataList({ title, items, emptyText }: { title: string; items: { name: s
   );
 }
 
-function PerformanceCard({ label, value, unit, good, bad }: { label: string; value: number | undefined; unit: string; good: number; bad: number }) {
-  if (value === undefined) return null;
-  
-  const status = value <= good ? "good" : value <= bad ? "needs improvement" : "poor";
-  const statusColor = status === "good" ? "text-green-500" : status === "needs improvement" ? "text-yellow-500" : "text-red-500";
-  
-  return (
-    <div className="py-3 border-b border-gray-200 dark:border-gray-800">
-      <div className="flex items-center justify-between">
-        <span className="text-sm text-gray-500">{label}</span>
-        <span className="text-sm text-[#1a1a1a] dark:text-white font-medium">{value.toFixed(2)}{unit}</span>
-      </div>
-      <span className={`text-[10px] ${statusColor}`}>{status}</span>
-    </div>
-  );
-}
-
 export default function AnalyticsPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [links, setLinks] = useState<Link[]>([]);
   const [analytics, setAnalytics] = useState<Analytics | null>(null);
   const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState<"overview" | "sources" | "audience" | "performance">("overview");
+  const [tab, setTab] = useState<"overview" | "sources" | "audience">("overview");
 
   useEffect(() => {
     async function load() {
@@ -176,7 +152,6 @@ export default function AnalyticsPage() {
   })) || [];
 
   const activeLinks = links.filter(l => l.enabled).length;
-  const perf = analytics?.performance;
 
   return (
     <DashboardLayout>
@@ -185,7 +160,7 @@ export default function AnalyticsPage() {
         <Header title="analytics" username={profile?.username} />
         <main className="p-6 lg:p-8 max-w-2xl">
           <div className="flex gap-4 mb-8 border-b border-gray-200 dark:border-gray-800 overflow-x-auto">
-            {(["overview", "sources", "audience", "performance"] as const).map((t) => (
+            {(["overview", "sources", "audience"] as const).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
@@ -266,29 +241,6 @@ export default function AnalyticsPage() {
                 emptyText="no device data yet"
               />
             </>
-          )}
-
-          {tab === "performance" && (
-            <section>
-              <h2 className="text-sm font-medium text-[#1a1a1a] dark:text-white mb-6">core web vitals</h2>
-              {perf ? (
-                <div>
-                  <PerformanceCard label="LCP (Largest Contentful Paint)" value={perf.lcp} unit="s" good={2.5} bad={4} />
-                  <PerformanceCard label="FID (First Input Delay)" value={perf.fid} unit="ms" good={100} bad={300} />
-                  <PerformanceCard label="CLS (Cumulative Layout Shift)" value={perf.cls} unit="" good={0.1} bad={0.25} />
-                  <PerformanceCard label="TTFB (Time to First Byte)" value={perf.ttfb} unit="ms" good={800} bad={1800} />
-                  
-                  {!perf.lcp && !perf.fid && !perf.cls && !perf.ttfb && (
-                    <p className="text-sm text-gray-400">no performance data collected yet</p>
-                  )}
-                </div>
-              ) : (
-                <div className="py-8 text-center border border-dashed border-gray-200 dark:border-gray-800">
-                  <p className="text-sm text-gray-400 mb-2">performance tracking enabled</p>
-                  <p className="text-xs text-gray-500">web vitals data will appear as visitors use your page</p>
-                </div>
-              )}
-            </section>
           )}
 
           {!analytics && (
