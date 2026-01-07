@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ThemeToggle } from "../components/ThemeToggle";
 
 const sections = [
@@ -545,11 +545,33 @@ join our discord and open a support ticket with:
   },
 };
 
+const allItems = sections.flatMap(s => s.items.map(item => ({ ...item, section: s.title, pro: 'pro' in item ? item.pro : false })));
+
 export default function DocsPage() {
   const [activeDoc, setActiveDoc] = useState("intro");
   const [mobileNav, setMobileNav] = useState(false);
+  const [search, setSearch] = useState("");
+  const [searchFocused, setSearchFocused] = useState(false);
+
   const currentDoc = docs[activeDoc];
-  const currentItem = sections.flatMap(s => s.items).find(i => i.id === activeDoc);
+  const currentItem = allItems.find(i => i.id === activeDoc);
+  const isPro = currentItem?.pro === true;
+
+  const searchResults = useMemo(() => {
+    if (!search.trim()) return [];
+    const q = search.toLowerCase();
+    return allItems.filter(item => {
+      const doc = docs[item.id];
+      return item.title.toLowerCase().includes(q) || doc?.content.toLowerCase().includes(q);
+    }).slice(0, 5);
+  }, [search]);
+
+  const handleSelectResult = (id: string) => {
+    setActiveDoc(id);
+    setSearch("");
+    setSearchFocused(false);
+    setMobileNav(false);
+  };
 
   return (
     <div className="min-h-screen bg-[#fdf5f3] dark:bg-[#1a1a1a] font-mono transition-colors">
@@ -557,16 +579,39 @@ export default function DocsPage() {
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center gap-2">
             <Image src="/sweethearticon.png" alt="" width={18} height={18} />
-            <span className="text-sm font-medium text-[#1a1a1a] dark:text-white">
+            <span className="text-sm font-medium text-[#1a1a1a] dark:text-white hidden sm:inline">
               sweethe<span className="text-pink-500">.</span>art
             </span>
           </Link>
-          <span className="text-gray-300 dark:text-gray-700">/</span>
-          <span className="text-sm text-pink-500">docs</span>
+          <span className="text-gray-300 dark:text-gray-700 hidden sm:inline">/</span>
+          <span className="text-sm text-pink-500 hidden sm:inline">docs</span>
         </div>
-        <div className="flex items-center gap-6">
-          <Link href="/pricing" className="text-xs text-gray-400 hover:text-pink-500 transition-colors hidden sm:block">pricing</Link>
-          <Link href="/login" className="text-xs text-gray-400 hover:text-pink-500 transition-colors hidden sm:block">login</Link>
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setTimeout(() => setSearchFocused(false), 200)}
+              placeholder="search..."
+              className="w-32 sm:w-48 px-3 py-1.5 text-xs bg-gray-100 dark:bg-[#252525] border-0 text-[#1a1a1a] dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-pink-500/50"
+            />
+            {searchFocused && searchResults.length > 0 && (
+              <div className="absolute top-full right-0 mt-1 w-64 bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-800 shadow-lg z-50">
+                {searchResults.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => handleSelectResult(item.id)}
+                    className="w-full text-left px-3 py-2 text-xs hover:bg-gray-50 dark:hover:bg-[#1a1a1a] transition-colors border-b border-gray-100 dark:border-gray-800 last:border-0"
+                  >
+                    <span className="text-[#1a1a1a] dark:text-white">{item.title}</span>
+                    <span className="text-gray-400 ml-2">{item.section}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
           <button
             onClick={() => setMobileNav(!mobileNav)}
             className="lg:hidden text-gray-400 hover:text-pink-500"
@@ -609,7 +654,7 @@ export default function DocsPage() {
                       }`}
                     >
                       {item.title}
-                      {item.pro && (
+                      {'pro' in item && item.pro && (
                         <span className="text-[9px] px-1 py-0.5 bg-pink-100 dark:bg-pink-500/20 text-pink-500 rounded">
                           pro
                         </span>
@@ -623,7 +668,7 @@ export default function DocsPage() {
         </aside>
 
         <main className="flex-1 lg:ml-56 px-6 py-12 max-w-2xl">
-          {currentItem?.pro && (
+          {isPro && (
             <div className="mb-6 px-3 py-2 border border-pink-500/30 bg-pink-50 dark:bg-pink-500/5 inline-flex items-center gap-2">
               <span className="text-[10px] text-pink-500">pro feature</span>
             </div>

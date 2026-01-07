@@ -41,11 +41,10 @@ export function Sidebar({ active, username }: SidebarProps) {
           key={item.id}
           href={item.href}
           onClick={() => mobile && setMobileOpen(false)}
-          className={`flex items-center h-9 px-2 text-sm transition-colors ${
-            active === item.id
+          className={`flex items-center h-9 px-2 text-sm transition-colors ${active === item.id
               ? "text-pink-500 font-medium"
               : "text-gray-400 hover:text-[#1a1a1a] dark:hover:text-white"
-          }`}
+            }`}
         >
           {(!collapsed || mobile) ? item.label : item.label.charAt(0).toUpperCase()}
         </Link>
@@ -111,9 +110,8 @@ export function Sidebar({ active, username }: SidebarProps) {
       )}
 
       <div
-        className={`fixed left-0 top-0 h-full bg-[#fdf5f3] dark:bg-[#1a1a1a] border-r border-gray-200 dark:border-gray-800 hidden lg:flex flex-col transition-all duration-200 ${
-          collapsed ? "w-14" : "w-48"
-        }`}
+        className={`fixed left-0 top-0 h-full bg-[#fdf5f3] dark:bg-[#1a1a1a] border-r border-gray-200 dark:border-gray-800 hidden lg:flex flex-col transition-all duration-200 ${collapsed ? "w-14" : "w-48"
+          }`}
       >
         <div className="h-[57px] px-4 flex items-center justify-between border-b border-gray-200 dark:border-gray-800">
           <Link href="/" className="flex items-center gap-2 min-w-0">
