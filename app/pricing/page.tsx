@@ -117,7 +117,7 @@ export default function PricingPage() {
         </div>
 
         <p className="text-center text-xs text-gray-400 mt-12">
-          questions? <a href="mailto:hi@sweethe.art" className="text-pink-500 hover:text-pink-400">hi@sweethe.art</a>
+          questions? <a href="https://discord.gg/ZxK7XmHyBG" target="_blank" rel="noopener noreferrer" className="text-pink-500 hover:text-pink-400">join our discord</a>
         </p>
       </main>
     </div>

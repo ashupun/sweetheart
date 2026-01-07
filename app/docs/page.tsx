@@ -477,7 +477,7 @@ we use privacy-focused analytics:
 currently, email changes require support assistance.
 
 **contact us**
-email hi@sweethe.art with:
+join our discord and open a support ticket with:
 • your current email
 • your desired new email
 • your username
@@ -665,7 +665,7 @@ export default function DocsPage() {
 
           <div className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between">
             <p className="text-xs text-gray-400">
-              need help? <a href="mailto:hi@sweethe.art" className="text-pink-500 hover:text-pink-400">hi@sweethe.art</a>
+              need help? <a href="https://discord.gg/ZxK7XmHyBG" target="_blank" rel="noopener noreferrer" className="text-pink-500 hover:text-pink-400">join our discord</a>
             </p>
             <Link href="/signup" className="text-xs text-pink-500 hover:text-pink-400">
               get started →
