@@ -39,7 +39,7 @@ export default function AdminPage() {
             }
             setLoading(false);
         });
-        
+
         return () => { mounted = false; };
     }, [loadEmails]);
 

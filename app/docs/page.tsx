@@ -20,59 +20,59 @@ interface Section {
 const sections: Section[] = [
   {
     id: "getting-started",
-    title: "getting started",
+    title: "Getting Started",
     items: [
-      { id: "intro", title: "what is sweetheart?" },
-      { id: "create-account", title: "create account" },
-      { id: "setup-profile", title: "setup profile" },
-      { id: "add-links", title: "add links" },
-      { id: "share", title: "share your page" },
+      { id: "intro", title: "What is sweetheart?" },
+      { id: "create-account", title: "Create Account" },
+      { id: "setup-profile", title: "Setup Profile" },
+      { id: "add-links", title: "Add Links" },
+      { id: "share", title: "Share Your Page" },
     ],
   },
   {
     id: "customization",
-    title: "customization",
+    title: "Customization",
     items: [
-      { id: "templates", title: "templates" },
-      { id: "themes", title: "color themes" },
-      { id: "fonts", title: "fonts" },
-      { id: "buttons", title: "button styles" },
-      { id: "socials", title: "social icons" },
+      { id: "templates", title: "Templates" },
+      { id: "themes", title: "Color Themes" },
+      { id: "fonts", title: "Fonts" },
+      { id: "buttons", title: "Button Styles" },
+      { id: "socials", title: "Social Icons" },
     ],
   },
   {
     id: "pro",
-    title: "pro features",
+    title: "Pro Features",
     items: [
-      { id: "backgrounds", title: "custom backgrounds", pro: true },
-      { id: "music", title: "profile music", pro: true },
-      { id: "branding", title: "remove branding", pro: true },
-      { id: "pro-templates", title: "pro templates", pro: true },
+      { id: "backgrounds", title: "Custom Backgrounds", pro: true },
+      { id: "music", title: "Profile Music", pro: true },
+      { id: "branding", title: "Remove Branding", pro: true },
+      { id: "pro-templates", title: "Pro Templates", pro: true },
     ],
   },
   {
     id: "analytics",
-    title: "analytics",
+    title: "Analytics",
     items: [
-      { id: "views", title: "page views" },
-      { id: "clicks", title: "link clicks" },
-      { id: "insights", title: "visitor insights" },
+      { id: "views", title: "Page Views" },
+      { id: "clicks", title: "Link Clicks" },
+      { id: "insights", title: "Visitor Insights" },
     ],
   },
   {
     id: "account",
-    title: "account",
+    title: "Account",
     items: [
-      { id: "email", title: "change email" },
-      { id: "password", title: "change password" },
-      { id: "delete", title: "delete account" },
+      { id: "email", title: "Change Email" },
+      { id: "password", title: "Change Password" },
+      { id: "delete", title: "Delete Account" },
     ],
   },
 ];
 
 const docs: Record<string, { title: string; content: string }> = {
   "intro": {
-    title: "what is sweetheart?",
+    title: "What is sweetheart?",
     content: `sweetheart is a link-in-bio platform designed with aesthetics in mind ♡
 
 **why sweetheart?**
@@ -94,7 +94,7 @@ anyone who wants a cute, customizable link page:
 • or just anyone who wants one link to rule them all ✨`,
   },
   "create-account": {
-    title: "create account",
+    title: "Create Account",
     content: `getting started takes less than a minute ♡
 
 **steps**
@@ -117,7 +117,7 @@ anyone who wants a cute, customizable link page:
 • keep your password secure`,
   },
   "setup-profile": {
-    title: "setup profile",
+    title: "Setup Profile",
     content: `your profile is how visitors see you ♡
 
 **display name**
@@ -141,7 +141,7 @@ your profile picture. tips:
 • shows as a circle on your page`,
   },
   "add-links": {
-    title: "add links",
+    title: "Add Links",
     content: `links are the heart of your page ♡
 
 **adding a link**
@@ -169,7 +169,7 @@ your profile picture. tips:
 • supports any valid url`,
   },
   "share": {
-    title: "share your page",
+    title: "Share Your Page",
     content: `time to share your link with the world ♡
 
 **your url**
@@ -197,7 +197,7 @@ qr code generation coming soon! perfect for:
 • events`,
   },
   "templates": {
-    title: "templates",
+    title: "Templates",
     content: `templates define the overall style of your page ♡
 
 **free templates**
@@ -229,7 +229,7 @@ upgrade to pro to unlock exclusive templates with unique designs and animations.
 3. changes save automatically`,
   },
   "themes": {
-    title: "color themes",
+    title: "Color Themes",
     content: `colors set the mood of your page ♡
 
 **available themes**
@@ -256,7 +256,7 @@ upgrade to pro to unlock exclusive templates with unique designs and animations.
 • your template affects how colors appear`,
   },
   "fonts": {
-    title: "fonts",
+    title: "Fonts",
     content: `fonts add personality to your page ♡
 
 **available fonts**
@@ -280,7 +280,7 @@ best for: professional pages
 4. save when happy`,
   },
   "buttons": {
-    title: "button styles",
+    title: "Button Styles",
     content: `customize how your link buttons look ♡
 
 **available styles**
@@ -301,7 +301,7 @@ sharp corners. bold and direct.
 4. save changes`,
   },
   "socials": {
-    title: "social icons",
+    title: "Social Icons",
     content: `show your social presence ♡
 
 **supported platforms**
@@ -327,7 +327,7 @@ sharp corners. bold and direct.
 • icons adapt to your theme`,
   },
   "backgrounds": {
-    title: "custom backgrounds",
+    title: "Custom Backgrounds",
     content: `make your page truly unique ♡
 
 **pro feature** - $5/month
@@ -350,7 +350,7 @@ sharp corners. bold and direct.
 • don't distract from your links`,
   },
   "music": {
-    title: "profile music",
+    title: "Profile Music",
     content: `add a soundtrack to your page ♡
 
 **pro feature** - $5/month
@@ -375,7 +375,7 @@ sharp corners. bold and direct.
 • choose something that represents you`,
   },
   "branding": {
-    title: "remove branding",
+    title: "Remove Branding",
     content: `clean, unbranded pages ♡
 
 **pro feature** - $5/month
@@ -398,7 +398,7 @@ sharp corners. bold and direct.
 4. save changes`,
   },
   "pro-templates": {
-    title: "pro templates",
+    title: "Pro Templates",
     content: `exclusive designs for pro users ♡
 
 **pro feature** - $5/month
@@ -420,7 +420,7 @@ sharp corners. bold and direct.
 3. pro templates unlock automatically`,
   },
   "views": {
-    title: "page views",
+    title: "Page Views",
     content: `track your page performance ♡
 
 **what we track**
@@ -441,7 +441,7 @@ we use privacy-focused analytics:
 3. updated in real-time`,
   },
   "clicks": {
-    title: "link clicks",
+    title: "Link Clicks",
     content: `see which links perform best ♡
 
 **what we track**
@@ -461,7 +461,7 @@ we use privacy-focused analytics:
 3. identify top performers`,
   },
   "insights": {
-    title: "visitor insights",
+    title: "Visitor Insights",
     content: `understand your audience ♡
 
 **what we track**
@@ -482,7 +482,7 @@ we use privacy-focused analytics:
 • understand your audience better`,
   },
   "email": {
-    title: "change email",
+    title: "Change Email",
     content: `update your email address ♡
 
 **how to change**
@@ -505,7 +505,7 @@ join our discord and open a support ticket with:
 • keep your account safe`,
   },
   "password": {
-    title: "change password",
+    title: "Change Password",
     content: `update your password ♡
 
 **change password**
@@ -530,7 +530,7 @@ join our discord and open a support ticket with:
 • update regularly`,
   },
   "delete": {
-    title: "delete account",
+    title: "Delete Account",
     content: `we're sad to see you go ♡
 
 **what gets deleted**
@@ -559,6 +559,62 @@ join our discord and open a support ticket with:
 
 const allItems = sections.flatMap(s => s.items.map(item => ({ ...item, section: s.title })));
 
+function SidebarSection({ 
+  section, 
+  activeDoc, 
+  onSelect,
+  defaultOpen = false 
+}: { 
+  section: Section; 
+  activeDoc: string; 
+  onSelect: (id: string) => void;
+  defaultOpen?: boolean;
+}) {
+  const hasActiveItem = section.items.some(item => item.id === activeDoc);
+  const [open, setOpen] = useState(defaultOpen || hasActiveItem);
+
+  return (
+    <div className="mb-1">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center gap-2 py-2 text-sm text-[#1a1a1a] dark:text-white hover:text-pink-500 dark:hover:text-pink-500 transition-colors"
+      >
+        <svg 
+          className={`w-3 h-3 text-gray-400 transition-transform ${open ? "rotate-90" : ""}`} 
+          fill="none" 
+          stroke="currentColor" 
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+        <span className={hasActiveItem ? "text-pink-500" : ""}>{section.title}</span>
+      </button>
+      {open && (
+        <div className="ml-5 border-l border-gray-200 dark:border-gray-800 pl-3 space-y-0.5">
+          {section.items.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => onSelect(item.id)}
+              className={`w-full text-left py-1.5 text-sm transition-colors flex items-center gap-2 ${
+                activeDoc === item.id
+                  ? "text-pink-500"
+                  : "text-gray-500 hover:text-[#1a1a1a] dark:hover:text-white"
+              }`}
+            >
+              {item.title}
+              {item.pro && (
+                <span className="text-[9px] px-1.5 py-0.5 bg-pink-500/10 text-pink-500 rounded-full">
+                  pro
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function DocsPage() {
   const [activeDoc, setActiveDoc] = useState("intro");
   const [mobileNav, setMobileNav] = useState(false);
@@ -577,6 +633,11 @@ export default function DocsPage() {
       return item.title.toLowerCase().includes(q) || doc?.content.toLowerCase().includes(q);
     }).slice(0, 5);
   }, [search]);
+
+  const handleSelectDoc = (id: string) => {
+    setActiveDoc(id);
+    setMobileNav(false);
+  };
 
   const handleSelectResult = (id: string) => {
     setActiveDoc(id);
@@ -637,7 +698,7 @@ export default function DocsPage() {
       </nav>
 
       <div className="flex">
-        <aside className={`${mobileNav ? 'fixed inset-0 z-40 bg-[#fdf5f3] dark:bg-[#1a1a1a] pt-[57px]' : 'hidden'} lg:block lg:fixed lg:left-0 lg:top-[57px] lg:bottom-0 lg:w-56 lg:border-r lg:border-gray-200 lg:dark:border-gray-800 overflow-y-auto`}>
+        <aside className={`${mobileNav ? 'fixed inset-0 z-40 bg-[#fdf5f3] dark:bg-[#1a1a1a] pt-[57px]' : 'hidden'} lg:block lg:fixed lg:left-0 lg:top-[57px] lg:bottom-0 lg:w-60 lg:border-r lg:border-gray-200 lg:dark:border-gray-800 overflow-y-auto`}>
           {mobileNav && (
             <button
               onClick={() => setMobileNav(false)}
@@ -648,37 +709,21 @@ export default function DocsPage() {
               </svg>
             </button>
           )}
-          <nav className="p-6 space-y-6">
-            {sections.map((section) => (
-              <div key={section.id}>
-                <p className="text-[10px] uppercase tracking-wider text-gray-400 mb-3">
-                  {section.title}
-                </p>
-                <div className="space-y-1">
-                  {section.items.map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => { setActiveDoc(item.id); setMobileNav(false); }}
-                      className={`w-full text-left py-1.5 text-sm transition-colors flex items-center gap-2 ${activeDoc === item.id
-                        ? "text-pink-500"
-                        : "text-gray-500 hover:text-[#1a1a1a] dark:hover:text-white"
-                        }`}
-                    >
-                      {item.title}
-                      {item.pro && (
-                        <span className="text-[9px] px-1 py-0.5 bg-pink-100 dark:bg-pink-500/20 text-pink-500 rounded">
-                          pro
-                        </span>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </div>
+          <div className="p-5">
+            <p className="text-[10px] uppercase tracking-wider text-gray-400 mb-4">Documentation</p>
+            {sections.map((section, i) => (
+              <SidebarSection
+                key={section.id}
+                section={section}
+                activeDoc={activeDoc}
+                onSelect={handleSelectDoc}
+                defaultOpen={i === 0}
+              />
             ))}
-          </nav>
+          </div>
         </aside>
 
-        <main className="flex-1 lg:ml-56 px-6 py-12 max-w-2xl">
+        <main className="flex-1 lg:ml-60 px-6 py-12 max-w-2xl">
           {isPro && (
             <div className="mb-6 px-3 py-2 border border-pink-500/30 bg-pink-50 dark:bg-pink-500/5 inline-flex items-center gap-2">
               <span className="text-[10px] text-pink-500">pro feature</span>
