@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { type ReactNode } from "react";
+import { type ReactNode, useEffect } from "react";
+import { track } from "@databuddy/sdk";
 import { ThemeToggle } from "../components/ThemeToggle";
 
 interface User {
@@ -70,6 +71,14 @@ export default function ProfileContent({ user }: { user: User }) {
   const theme = themes[user.theme] || themes.pink;
   const btnStyle = buttonStyles[user.buttonStyle] || buttonStyles.rounded;
   const fontClass = user.font === "sans" ? "font-sans" : "font-mono";
+
+  useEffect(() => {
+    track("profile_viewed", { username: user.username });
+  }, [user.username]);
+
+  const handleLinkClick = (linkTitle: string, linkUrl: string) => {
+    track("link_clicked", { username: user.username, link_title: linkTitle, link_url: linkUrl });
+  };
 
   return (
     <div className="min-h-screen py-8 px-4 relative overflow-hidden" style={{ backgroundColor: theme.bg }}>
@@ -149,6 +158,7 @@ export default function ProfileContent({ user }: { user: User }) {
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => handleLinkClick(link.title, link.url)}
               className={`block w-full bg-white/80 backdrop-blur-sm p-4 ${btnStyle} transition-all hover:scale-[1.02] hover:shadow-lg group`}
             >
               <div className="flex items-center gap-4">

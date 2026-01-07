@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins, Fredoka } from "next/font/google";
-import Script from "next/script";
+import { Databuddy } from "@databuddy/sdk/react";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -23,9 +23,11 @@ export const metadata: Metadata = {
 const themeScript = `
   (function() {
     try {
+      document.documentElement.style.colorScheme = 'light dark';
       var theme = localStorage.getItem('theme');
       var isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
-      if (isDark) document.documentElement.classList.add('dark');
+      document.documentElement.classList.toggle('dark', isDark);
+      document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
     } catch (e) {}
   })();
 `;
@@ -39,14 +41,21 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <style dangerouslySetInnerHTML={{ __html: `
+          html { background-color: #fdf5f3; }
+          html.dark { background-color: #1a1a1a; }
+        `}} />
       </head>
-      <body className={`${poppins.variable} ${fredoka.variable} font-sans antialiased`}>
-        {children}
-        <Script
-          src="https://cdn.databuddy.cc/databuddy.js"
-          data-client-id="dadda45c-2adf-4db9-911b-4ae9f1f1de4e"
-          strategy="afterInteractive"
+      <body className={`${poppins.variable} ${fredoka.variable} font-sans antialiased bg-[#fdf5f3] dark:bg-[#1a1a1a] transition-colors`}>
+        <Databuddy
+          clientId="dadda45c-2adf-4db9-911b-4ae9f1f1de4e"
+          trackWebVitals
+          trackOutgoingLinks
+          trackErrors
+          enableBatching
+          disabled={process.env.NODE_ENV === "development"}
         />
+        {children}
       </body>
     </html>
   );

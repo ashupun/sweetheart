@@ -6,6 +6,9 @@ export const user = pgTable("user", {
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").notNull().default(false),
   image: text("image"),
+  isPro: boolean("is_pro").default(false),
+  stripeCustomerId: text("stripe_customer_id"),
+  stripeSubscriptionId: text("stripe_subscription_id"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
@@ -54,9 +57,16 @@ export const profile = pgTable("profile", {
   bio: text("bio"),
   avatarUrl: text("avatar_url"),
   theme: text("theme").default("pink"),
+  template: text("template").default("minimal"),
   buttonStyle: text("button_style").default("rounded"),
   font: text("font").default("mono"),
   showSocials: boolean("show_socials").default(true),
+  backgroundUrl: text("background_url"),
+  backgroundBlur: integer("background_blur").default(0),
+  backgroundOpacity: integer("background_opacity").default(100),
+  musicUrl: text("music_url"),
+  musicTitle: text("music_title"),
+  hideBranding: boolean("hide_branding").default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
@@ -78,4 +88,3 @@ export const social = pgTable("social", {
   platform: text("platform").notNull(),
   url: text("url").notNull(),
 });
-
