@@ -660,8 +660,8 @@ export default function DocsPage() {
                       key={item.id}
                       onClick={() => { setActiveDoc(item.id); setMobileNav(false); }}
                       className={`w-full text-left py-1.5 text-sm transition-colors flex items-center gap-2 ${activeDoc === item.id
-                          ? "text-pink-500"
-                          : "text-gray-500 hover:text-[#1a1a1a] dark:hover:text-white"
+                        ? "text-pink-500"
+                        : "text-gray-500 hover:text-[#1a1a1a] dark:hover:text-white"
                         }`}
                     >
                       {item.title}

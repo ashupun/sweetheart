@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Sidebar } from "../components/sidebar";
 import { Header } from "../components/header";
 import { Toggle } from "../components/toggle";
@@ -14,10 +14,11 @@ export default function Dashboard() {
   const [links, setLinks] = useState<LinkType[]>([]);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [newLink, setNewLink] = useState({ title: "", url: "" });
-  const [editingLink, setEditingLink] = useState<string | null>(null);
-  const [editForm, setEditForm] = useState({ title: "", url: "" });
+  const [editingField, setEditingField] = useState<{ id: string; field: "title" | "url" } | null>(null);
+  const [editValue, setEditValue] = useState("");
   const [isAdding, setIsAdding] = useState(false);
   const [loading, setLoading] = useState(true);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     async function load() {
@@ -28,6 +29,13 @@ export default function Dashboard() {
     }
     load();
   }, []);
+
+  useEffect(() => {
+    if (editingField && inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.select();
+    }
+  }, [editingField]);
 
   const handleAddLink = async () => {
     if (newLink.title && newLink.url) {
@@ -51,17 +59,36 @@ export default function Dashboard() {
     setLinks(links.map(link => link.id === id ? { ...link, enabled: !enabled } : link));
   };
 
-  const handleEditLink = (link: LinkType) => {
-    setEditingLink(link.id);
-    setEditForm({ title: link.title, url: link.url });
+  const startEdit = (id: string, field: "title" | "url", value: string) => {
+    setEditingField({ id, field });
+    setEditValue(value);
   };
 
-  const handleSaveEdit = async () => {
-    if (editingLink && editForm.title && editForm.url) {
-      await updateLink(editingLink, { title: editForm.title, url: editForm.url });
-      setLinks(links.map(link => link.id === editingLink ? { ...link, ...editForm } : link));
-      setEditingLink(null);
-      setEditForm({ title: "", url: "" });
+  const saveEdit = async () => {
+    if (!editingField || !editValue.trim()) {
+      setEditingField(null);
+      return;
+    }
+
+    const link = links.find(l => l.id === editingField.id);
+    if (!link) return;
+
+    const updates = editingField.field === "title" 
+      ? { title: editValue } 
+      : { url: editValue };
+
+    await updateLink(editingField.id, updates);
+    setLinks(links.map(l => l.id === editingField.id ? { ...l, ...updates } : l));
+    setEditingField(null);
+    setEditValue("");
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      saveEdit();
+    } else if (e.key === "Escape") {
+      setEditingField(null);
+      setEditValue("");
     }
   };
 
@@ -121,50 +148,56 @@ export default function Dashboard() {
             {links.map((link, index) => (
               <div
                 key={link.id}
-                className={`py-4 border-b border-gray-200 dark:border-gray-800 ${!link.enabled && "opacity-40"}`}
+                className={`group py-4 border-b border-gray-200 dark:border-gray-800 ${!link.enabled && "opacity-40"}`}
               >
-                {editingLink === link.id ? (
-                  <div>
-                    <input
-                      type="text"
-                      value={editForm.title}
-                      onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
-                      className="w-full px-0 py-2 bg-transparent text-[#1a1a1a] dark:text-white border-0 border-b border-gray-300 dark:border-gray-700 text-sm focus:outline-none focus:border-pink-500"
-                      autoFocus
-                    />
-                    <input
-                      type="url"
-                      value={editForm.url}
-                      onChange={(e) => setEditForm({ ...editForm, url: e.target.value })}
-                      className="w-full px-0 py-2 bg-transparent text-[#1a1a1a] dark:text-white border-0 border-b border-gray-300 dark:border-gray-700 text-sm focus:outline-none focus:border-pink-500"
-                    />
-                    <div className="flex gap-4 mt-3">
-                      <button onClick={handleSaveEdit} className="text-pink-500 text-sm">save</button>
-                      <button onClick={() => setEditingLink(null)} className="text-gray-500 text-sm">cancel</button>
-                    </div>
+                <div className="flex items-center gap-4">
+                  <span className="text-xs text-gray-300 dark:text-gray-600 w-4 shrink-0">{index + 1}</span>
+                  <div className="flex-1 min-w-0">
+                    {editingField?.id === link.id && editingField.field === "title" ? (
+                      <input
+                        ref={inputRef}
+                        type="text"
+                        value={editValue}
+                        onChange={(e) => setEditValue(e.target.value)}
+                        onBlur={saveEdit}
+                        onKeyDown={handleKeyDown}
+                        className="w-full px-0 py-0 bg-transparent text-[#1a1a1a] dark:text-white border-0 text-sm focus:outline-none"
+                      />
+                    ) : (
+                      <p
+                        onClick={() => startEdit(link.id, "title", link.title)}
+                        className="text-sm text-[#1a1a1a] dark:text-white truncate cursor-text hover:text-pink-500 transition-colors"
+                      >
+                        {link.title}
+                      </p>
+                    )}
+                    {editingField?.id === link.id && editingField.field === "url" ? (
+                      <input
+                        ref={inputRef}
+                        type="text"
+                        value={editValue}
+                        onChange={(e) => setEditValue(e.target.value)}
+                        onBlur={saveEdit}
+                        onKeyDown={handleKeyDown}
+                        className="w-full px-0 py-0 bg-transparent text-gray-400 border-0 text-xs focus:outline-none"
+                      />
+                    ) : (
+                      <p
+                        onClick={() => startEdit(link.id, "url", link.url)}
+                        className="text-xs text-gray-400 truncate cursor-text hover:text-pink-500 transition-colors"
+                      >
+                        {link.url}
+                      </p>
+                    )}
                   </div>
-                ) : (
-                  <div className="flex items-center gap-4">
-                    <span className="text-xs text-gray-300 dark:text-gray-600 w-4">{index + 1}</span>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-[#1a1a1a] dark:text-white truncate">{link.title}</p>
-                      <p className="text-xs text-gray-400 truncate">{link.url}</p>
-                    </div>
-                    <button
-                      onClick={() => handleEditLink(link)}
-                      className="text-xs text-gray-400 hover:text-pink-500 transition-colors"
-                    >
-                      edit
-                    </button>
-                    <button
-                      onClick={() => handleDeleteLink(link.id)}
-                      className="text-xs text-gray-400 hover:text-red-500 transition-colors"
-                    >
-                      delete
-                    </button>
-                    <Toggle enabled={link.enabled ?? false} onChange={() => handleToggleLink(link.id, link.enabled ?? false)} />
-                  </div>
-                )}
+                  <button
+                    onClick={() => handleDeleteLink(link.id)}
+                    className="text-xs text-gray-300 dark:text-gray-600 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                  >
+                    ×
+                  </button>
+                  <Toggle enabled={link.enabled ?? false} onChange={() => handleToggleLink(link.id, link.enabled ?? false)} />
+                </div>
               </div>
             ))}
           </div>
@@ -173,6 +206,12 @@ export default function Dashboard() {
             <div className="text-center py-16">
               <p className="text-gray-400 text-sm">no links yet</p>
             </div>
+          )}
+
+          {links.length > 0 && (
+            <p className="text-[10px] text-gray-300 dark:text-gray-700 mt-6">
+              click to edit • enter to save • esc to cancel
+            </p>
           )}
         </main>
       </div>
