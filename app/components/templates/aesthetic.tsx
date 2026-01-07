@@ -12,33 +12,22 @@ export const config: TemplateConfig = {
   tags: ["aesthetic", "cute", "dreamy"],
 };
 
-export function Template({ profile, links, theme }: TemplateProps) {
+export function Template({ profile, links }: TemplateProps) {
   return (
-    <div className="min-h-full w-full flex items-center justify-center p-8 relative overflow-hidden" style={{ backgroundColor: theme.bg }}>
-      <div className="absolute top-20 left-20 w-64 h-64 rounded-full blur-3xl opacity-30" style={{ backgroundColor: theme.primary }} />
-      <div className="absolute bottom-20 right-20 w-48 h-48 rounded-full blur-3xl opacity-20" style={{ backgroundColor: theme.secondary }} />
+    <div className="min-h-full w-full flex items-center justify-center p-8 relative overflow-hidden bg-gradient-to-br from-pink-50 via-white to-purple-50">
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-pink-200/30 blur-3xl" />
+      <div className="absolute bottom-1/4 right-1/4 w-72 h-72 rounded-full bg-purple-200/30 blur-3xl" />
 
-      <div className="w-full max-w-md text-center relative z-10">
-        <div className="relative inline-block mb-6">
-          <div className="absolute inset-0 rounded-full blur-xl opacity-50" style={{ backgroundColor: theme.primary }} />
-          <div
-            className="relative w-28 h-28 rounded-full flex items-center justify-center text-white text-3xl font-semibold shadow-xl border-4 border-white"
-            style={{ background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})` }}
-          >
-            {profile?.displayName?.charAt(0) || "?"}
-          </div>
-          <span className="absolute -top-2 -right-2 text-2xl">✧</span>
-          <span className="absolute -bottom-1 -left-1 text-xl">♡</span>
+      <div className="w-full max-w-sm text-center relative z-10">
+        <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-pink-400 to-purple-400 flex items-center justify-center text-white text-3xl font-medium mb-6 shadow-lg shadow-pink-200">
+          {profile?.displayName?.charAt(0)?.toUpperCase() || "♡"}
         </div>
 
-        <h1 className="text-2xl font-semibold mb-1" style={{ color: theme.secondary }}>
+        <h1 className="text-xl font-medium text-gray-800 mb-1">
           {profile?.displayName || "Your Name"}
         </h1>
-        <p className="text-sm opacity-60 mb-2" style={{ color: theme.primary }}>
-          @{profile?.username || "username"}
-        </p>
-        <p className="mb-8 max-w-xs mx-auto opacity-70" style={{ color: theme.secondary }}>
-          ✧ {profile?.bio || "dreaming in pixels"} ✧
+        <p className="text-sm text-pink-400 mb-6">
+          {profile?.bio || "✧ dreaming in pixels ✧"}
         </p>
 
         <div className="space-y-3">
@@ -48,17 +37,14 @@ export function Template({ profile, links, theme }: TemplateProps) {
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full py-4 px-6 bg-white/70 backdrop-blur-sm rounded-2xl font-medium hover:bg-white/90 hover:scale-[1.02] transition-all shadow-sm"
-              style={{ color: theme.secondary }}
+              className="block w-full py-3.5 px-4 bg-white/80 backdrop-blur-sm rounded-2xl text-gray-700 text-sm font-medium hover:bg-white hover:shadow-md hover:shadow-pink-100 transition-all"
             >
-              ♡ {link.title}
+              {link.title}
             </a>
           ))}
         </div>
 
-        <p className="text-xs mt-10 opacity-40" style={{ color: theme.primary }}>
-          ✧ sweethe.art ✧
-        </p>
+        <p className="text-[10px] text-pink-300 mt-12">sweethe.art ♡</p>
       </div>
     </div>
   );

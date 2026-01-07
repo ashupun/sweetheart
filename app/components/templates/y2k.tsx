@@ -13,61 +13,42 @@ export const config: TemplateConfig = {
   isPro: true,
 };
 
-export function Template({ profile, links, theme }: TemplateProps) {
+export function Template({ profile, links }: TemplateProps) {
   return (
-    <div className="min-h-full w-full flex items-center justify-center p-8 relative overflow-hidden" style={{ background: "linear-gradient(180deg, #0f0f23, #1e1b4b)" }}>
+    <div className="min-h-full w-full flex items-center justify-center p-8 relative overflow-hidden bg-[#0f0f23]">
       <div className="absolute inset-0 opacity-10" style={{
-        backgroundImage: `
-          linear-gradient(rgba(34,211,238,0.3) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(34,211,238,0.3) 1px, transparent 1px)
-        `,
-        backgroundSize: "40px 40px",
+        backgroundImage: `linear-gradient(rgba(34,211,238,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.3) 1px, transparent 1px)`,
+        backgroundSize: "30px 30px",
       }} />
 
-      <div className="w-full max-w-md text-center font-mono relative z-10">
-        <div className="relative inline-block mb-6">
-          <div
-            className="w-24 h-24 rounded-lg flex items-center justify-center text-3xl font-bold border-2"
-            style={{
-              background: "linear-gradient(135deg, #0f0f23, #1e1b4b)",
-              borderColor: "#22d3ee",
-              color: "#22d3ee",
-              boxShadow: "0 0 30px rgba(34,211,238,0.3)",
-            }}
-          >
-            {profile?.displayName?.charAt(0) || "?"}
-          </div>
+      <div className="w-full max-w-sm text-center font-mono relative z-10">
+        <div className="w-20 h-20 mx-auto rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl font-bold mb-6" style={{ boxShadow: "0 0 20px rgba(34,211,238,0.2)" }}>
+          {profile?.displayName?.charAt(0)?.toUpperCase() || "?"}
         </div>
 
-        <h1 className="text-2xl font-bold mb-1" style={{ color: "#22d3ee", textShadow: "0 0 20px rgba(34,211,238,0.5)" }}>
-          {profile?.displayName || "CYBER_USER"}
+        <h1 className="text-lg font-bold text-cyan-400 mb-1" style={{ textShadow: "0 0 10px rgba(34,211,238,0.5)" }}>
+          {profile?.displayName || "USER"}
         </h1>
-        <p className="text-violet-400 text-sm mb-2">@{profile?.username || "username"}</p>
-        <p className="text-cyan-300/60 mb-8 max-w-xs mx-auto text-sm">
-          {"// "}{profile?.bio || "welcome to the matrix"}{" //"}
+        <p className="text-sm text-cyan-600 mb-6">
+          {profile?.bio || "welcome to the matrix"}
         </p>
 
-        <div className="space-y-3">
+        <div className="space-y-2">
           {links.map((link, i) => (
             <a
               key={link.id}
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full py-4 px-6 rounded-lg font-medium transition-all hover:scale-[1.02]"
-              style={{
-                background: "rgba(34,211,238,0.1)",
-                border: "1px solid rgba(34,211,238,0.3)",
-                color: "#22d3ee",
-                boxShadow: "0 0 15px rgba(34,211,238,0.1)",
-              }}
+              className="block w-full py-3 px-4 rounded-lg text-cyan-400 text-sm font-medium transition-all hover:bg-cyan-500/20"
+              style={{ background: "rgba(34,211,238,0.08)", border: "1px solid rgba(34,211,238,0.2)" }}
             >
               [{String(i + 1).padStart(2, "0")}] {link.title}
             </a>
           ))}
         </div>
 
-        <p className="text-xs text-cyan-500/40 mt-10 tracking-widest">{"<SWEETHE.ART />"}</p>
+        <p className="text-[10px] text-cyan-700 mt-12 tracking-widest">{"<SWEETHE.ART />"}</p>
       </div>
     </div>
   );

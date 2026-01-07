@@ -12,37 +12,36 @@ export const config: TemplateConfig = {
   tags: ["minimal", "bold", "edgy"],
 };
 
-export function Template({ profile, links, theme }: TemplateProps) {
+export function Template({ profile, links }: TemplateProps) {
   return (
     <div className="min-h-full w-full flex items-center justify-center p-8 bg-white">
-      <div className="w-full max-w-lg text-center">
-        <div className="w-28 h-28 mx-auto border-4 border-black flex items-center justify-center text-4xl font-black mb-6 bg-yellow-300">
+      <div className="w-full max-w-sm">
+        <div className="w-20 h-20 border-2 border-black flex items-center justify-center text-2xl font-bold mb-6">
           {profile?.displayName?.charAt(0)?.toUpperCase() || "?"}
         </div>
 
-        <h1 className="text-4xl font-black uppercase tracking-tight text-black mb-2">
-          {profile?.displayName || "YOUR NAME"}
+        <h1 className="text-2xl font-bold uppercase text-black mb-1">
+          {profile?.displayName || "NAME"}
         </h1>
-        <p className="text-lg font-mono text-black mb-2">@{profile?.username || "username"}</p>
-        <p className="text-black font-mono mb-10 max-w-sm mx-auto border-t-2 border-b-2 border-black py-4">
-          {profile?.bio || "NO BIO SET."}
+        <p className="text-sm font-mono text-gray-500 mb-6">
+          {profile?.bio || "no bio"}
         </p>
 
-        <div className="space-y-4">
+        <div className="space-y-2">
           {links.map((link) => (
             <a
               key={link.id}
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full py-4 px-6 bg-white border-4 border-black text-black font-black uppercase tracking-wide hover:bg-black hover:text-white transition-colors shadow-[4px_4px_0_0_#000]"
+              className="block w-full py-3 px-4 bg-black text-white text-sm font-medium hover:bg-gray-800 transition-colors"
             >
-              → {link.title}
+              {link.title} →
             </a>
           ))}
         </div>
 
-        <p className="text-xs font-mono mt-12 text-black">[ SWEETHE.ART ]</p>
+        <p className="text-[10px] font-mono text-gray-300 mt-12 uppercase tracking-widest">sweethe.art</p>
       </div>
     </div>
   );

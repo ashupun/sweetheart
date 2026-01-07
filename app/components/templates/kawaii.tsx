@@ -12,49 +12,44 @@ export const config: TemplateConfig = {
   tags: ["cute", "aesthetic", "kawaii"],
 };
 
-export function Template({ profile, links, theme }: TemplateProps) {
+export function Template({ profile, links }: TemplateProps) {
   return (
-    <div className="min-h-full w-full flex items-center justify-center p-8 relative overflow-hidden" style={{ backgroundColor: "#fef3f2" }}>
-      <div className="absolute top-10 left-10 text-4xl opacity-20">✿</div>
-      <div className="absolute top-20 right-20 text-3xl opacity-20">♡</div>
-      <div className="absolute bottom-20 left-20 text-3xl opacity-20">✧</div>
-      <div className="absolute bottom-10 right-10 text-4xl opacity-20">❀</div>
+    <div className="min-h-full w-full flex items-center justify-center p-8 relative overflow-hidden bg-rose-50">
+      <div className="absolute top-16 left-16 text-4xl text-rose-200">✿</div>
+      <div className="absolute top-24 right-24 text-2xl text-rose-200">♡</div>
+      <div className="absolute bottom-24 left-24 text-2xl text-rose-200">✧</div>
+      <div className="absolute bottom-16 right-16 text-4xl text-rose-200">❀</div>
 
-      <div className="w-full max-w-md text-center relative z-10">
+      <div className="w-full max-w-sm text-center relative z-10">
         <div className="relative inline-block mb-6">
-          <div
-            className="w-28 h-28 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg border-4 border-white"
-            style={{ background: `linear-gradient(135deg, #fb7185, #f472b6)` }}
-          >
-            {profile?.displayName?.charAt(0) || "?"}
+          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-rose-400 to-pink-400 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+            {profile?.displayName?.charAt(0)?.toUpperCase() || "♡"}
           </div>
-          <span className="absolute -top-1 -right-1 text-2xl">🎀</span>
-          <span className="absolute -bottom-1 left-0 text-xl">✿</span>
+          <span className="absolute -top-1 -right-1 text-xl">🎀</span>
         </div>
 
-        <h1 className="text-2xl font-bold text-rose-500 mb-1">
-          {profile?.displayName || "Your Name"} ♡
+        <h1 className="text-lg font-bold text-rose-500 mb-1">
+          {profile?.displayName || "Your Name"}
         </h1>
-        <p className="text-rose-400 text-sm mb-2">@{profile?.username || "username"}</p>
-        <p className="text-rose-400/80 mb-8 max-w-xs mx-auto">
-          ꒰ {profile?.bio || "welcome to my page!"} ꒱
+        <p className="text-sm text-rose-300 mb-6">
+          {profile?.bio || "welcome to my page!"}
         </p>
 
-        <div className="space-y-3">
+        <div className="space-y-2">
           {links.map((link) => (
             <a
               key={link.id}
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full py-4 px-6 bg-white rounded-full text-rose-500 font-medium shadow-md hover:shadow-lg hover:scale-[1.02] transition-all border-2 border-rose-200"
+              className="block w-full py-3 px-4 bg-white rounded-full text-rose-500 text-sm font-medium shadow-sm hover:shadow-md transition-all border border-rose-100"
             >
-              ♡ {link.title} ♡
+              ♡ {link.title}
             </a>
           ))}
         </div>
 
-        <p className="text-xs text-rose-300 mt-10">✧ sweethe.art ✧</p>
+        <p className="text-[10px] text-rose-300 mt-12">sweethe.art ♡</p>
       </div>
     </div>
   );
