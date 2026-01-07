@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { authClient } from "@/lib/client";
-import { AuthLayout } from "../components/layout";
+import { AuthLayout } from "../components/layouts";
 import { Alert } from "../components/alert";
 
 export default function ForgotPassword() {

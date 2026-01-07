@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, Suspense } from "react";
 import { authClient } from "@/lib/client";
-import { AuthLayout } from "../components/layout";
+import { AuthLayout } from "../components/layouts";
 import { Alert } from "../components/alert";
 
 function ResetForm() {

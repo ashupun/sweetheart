@@ -5,7 +5,7 @@ import { Sidebar } from "../../components/sidebar";
 import { Header } from "../../components/header";
 import { Loading } from "../../components/loading";
 import { Alert } from "../../components/alert";
-import { DashboardLayout } from "../../components/layout";
+import { DashboardLayout } from "../../components/layouts";
 import { getProfileData, updateProfile } from "../actions";
 import { signOut } from "@/lib/client";
 import type { Profile } from "@/lib/types";

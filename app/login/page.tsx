@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { signIn } from "@/lib/client";
 import { getEmailByUsername } from "../auth/actions";
-import { AuthLayout } from "../components/layout";
+import { AuthLayout } from "../components/layouts";
 import { Alert } from "../components/alert";
 
 export default function Login() {

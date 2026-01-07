@@ -5,7 +5,7 @@ import { Sidebar } from "../components/sidebar";
 import { Header } from "../components/header";
 import { Toggle } from "../components/toggle";
 import { Loading } from "../components/loading";
-import { DashboardLayout } from "../components/layout";
+import { DashboardLayout } from "../components/layouts";
 import { getLinks, addLink, deleteLink, toggleLink, getProfileData } from "./actions";
 import type { Link as LinkType, Profile } from "@/lib/types";
 

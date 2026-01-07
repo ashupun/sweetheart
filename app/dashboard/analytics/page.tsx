@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Sidebar } from "../../components/sidebar";
 import { Header } from "../../components/header";
 import { Loading } from "../../components/loading";
-import { DashboardLayout } from "../../components/layout";
+import { DashboardLayout } from "../../components/layouts";
 import { getProfileData, getLinks } from "../actions";
 import type { Profile, Link } from "@/lib/types";
 
