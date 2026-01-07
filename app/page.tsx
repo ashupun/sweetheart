@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "./components/ThemeToggle";
+import { useSession } from "@/lib/client";
 
 export default function Home() {
+  const { data: session } = useSession();
   const [entered, setEntered] = useState(false);
   const [typed, setTyped] = useState("");
   const fullText = "sweethe.art/you";
@@ -32,15 +34,23 @@ export default function Home() {
 
       <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4">
         <div className="flex items-center justify-between max-w-6xl mx-auto text-xs tracking-wide">
-          <div className="flex items-center gap-8">
-            <span className="font-medium">Sweetheart Inc.</span>
-            <span className="text-gray-400 dark:text-gray-600">2025</span>
-          </div>
           <div className="flex items-center gap-6">
-            <ThemeToggle />
-            <Link href="/login" className="hover:text-pink-500 transition-colors">login ↗</Link>
-            <Link href="/signup" className="hover:text-pink-500 transition-colors">register ↗</Link>
-            <span className="text-pink-500">@sweetheart</span>
+            <span className="font-medium">sweethe.art</span>
+            <Link href="/pricing" className="text-gray-500 hover:text-pink-500 transition-colors hidden sm:block">pricing</Link>
+            <Link href="/docs" className="text-gray-500 hover:text-pink-500 transition-colors hidden sm:block">docs</Link>
+          </div>
+          <ThemeToggle />
+          <div className="flex items-center gap-6">
+            {session?.user ? (
+              <Link href="/dashboard" className="text-pink-500 hover:text-pink-400 transition-colors">
+                @{session.user.name} ↗
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" className="hover:text-pink-500 transition-colors">login</Link>
+                <Link href="/signup" className="text-pink-500 hover:text-pink-400 transition-colors">register ↗</Link>
+              </>
+            )}
           </div>
         </div>
       </nav>
@@ -73,10 +83,10 @@ export default function Home() {
                 {typed === fullText && (
                   <div className="animate-fade-in">
                     <Link
-                      href="/signup"
+                      href={session?.user ? "/dashboard" : "/signup"}
                       className="inline-flex items-center gap-2 text-sm hover:text-pink-500 transition-colors"
                     >
-                      claim yours ↗
+                      {session?.user ? "go to dashboard ↗" : "claim yours ↗"}
                     </Link>
                   </div>
                 )}

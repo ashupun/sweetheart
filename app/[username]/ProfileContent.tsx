@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { type ReactNode } from "react";
+import { type ReactNode, useEffect } from "react";
+import { track } from "@databuddy/sdk";
 import { ThemeToggle } from "../components/ThemeToggle";
 
 interface User {
@@ -11,13 +12,27 @@ interface User {
   bio: string;
   avatar: string | null;
   theme: string;
-  links: { id: number; title: string; url: string; icon: string }[];
-  socials: {
-    twitter?: string;
-    instagram?: string;
-    tiktok?: string;
-  };
+  buttonStyle: string;
+  font: string;
+  showSocials: boolean;
+  links: { id: string; title: string; url: string; icon: string }[];
+  socials: Record<string, string>;
 }
+
+const themes: Record<string, { primary: string; secondary: string; bg: string }> = {
+  pink: { primary: "#ec4899", secondary: "#db2777", bg: "#fce7f3" },
+  lavender: { primary: "#a78bfa", secondary: "#8b5cf6", bg: "#ede9fe" },
+  mint: { primary: "#34d399", secondary: "#10b981", bg: "#d1fae5" },
+  peach: { primary: "#fb923c", secondary: "#f97316", bg: "#ffedd5" },
+  ocean: { primary: "#38bdf8", secondary: "#0ea5e9", bg: "#e0f2fe" },
+  rose: { primary: "#f472b6", secondary: "#ec4899", bg: "#fdf2f8" },
+};
+
+const buttonStyles: Record<string, string> = {
+  rounded: "rounded-xl",
+  pill: "rounded-full",
+  sharp: "rounded-md",
+};
 
 const icons: Record<string, ReactNode> = {
   twitch: (
@@ -52,32 +67,52 @@ const icons: Record<string, ReactNode> = {
   ),
 };
 
-export default function ProfileContent({ user, username }: { user: User; username: string }) {
+export default function ProfileContent({ user }: { user: User }) {
+  const theme = themes[user.theme] || themes.pink;
+  const btnStyle = buttonStyles[user.buttonStyle] || buttonStyles.rounded;
+  const fontClass = user.font === "sans" ? "font-sans" : "font-mono";
+
+  useEffect(() => {
+    track("profile_viewed", { username: user.username });
+  }, [user.username]);
+
+  const handleLinkClick = (linkTitle: string, linkUrl: string) => {
+    track("link_clicked", { username: user.username, link_title: linkTitle, link_url: linkUrl });
+  };
+
   return (
-    <div className="min-h-screen py-8 px-4 relative overflow-hidden">
-      {/* Theme Toggle */}
+    <div className="min-h-screen py-8 px-4 relative overflow-hidden" style={{ backgroundColor: theme.bg }}>
       <div className="absolute top-4 right-4 z-20">
         <ThemeToggle />
       </div>
 
-      {/* Floating Blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-20 -right-20 w-80 h-80 bg-gradient-to-br from-pink-300 to-pink-400 rounded-full blur-3xl opacity-40 animate-float-slow" />
-        <div className="absolute top-1/2 -left-20 w-60 h-60 bg-gradient-to-tr from-pink-200 to-pink-300 rounded-full blur-3xl opacity-30 animate-float" />
-        <div className="absolute bottom-20 right-1/4 w-40 h-40 bg-gradient-to-bl from-pink-300 to-pink-400 rounded-full blur-2xl opacity-30 animate-float-delayed" />
+        <div
+          className="absolute -top-20 -right-20 w-80 h-80 rounded-full blur-3xl opacity-40 animate-float-slow"
+          style={{ background: `linear-gradient(to bottom right, ${theme.primary}66, ${theme.secondary}66)` }}
+        />
+        <div
+          className="absolute top-1/2 -left-20 w-60 h-60 rounded-full blur-3xl opacity-30 animate-float"
+          style={{ background: `linear-gradient(to top right, ${theme.primary}44, ${theme.secondary}44)` }}
+        />
+        <div
+          className="absolute bottom-20 right-1/4 w-40 h-40 rounded-full blur-2xl opacity-30 animate-float-delayed"
+          style={{ background: `linear-gradient(to bottom left, ${theme.primary}66, ${theme.secondary}66)` }}
+        />
       </div>
 
-      <div className="max-w-md mx-auto relative z-10">
-        {/* Profile Header */}
+      <div className={`max-w-md mx-auto relative z-10 ${fontClass}`}>
         <div className="text-center mb-8">
-          {/* Avatar */}
           <div className="relative inline-block mb-4">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-pink-400 to-pink-500 p-1 animate-pulse-glow">
-              <div className="w-full h-full rounded-full bg-pink-100 flex items-center justify-center overflow-hidden">
+            <div
+              className="w-24 h-24 rounded-full p-1 animate-pulse-glow"
+              style={{ background: `linear-gradient(to bottom right, ${theme.primary}, ${theme.secondary})` }}
+            >
+              <div className="w-full h-full rounded-full flex items-center justify-center overflow-hidden" style={{ backgroundColor: `${theme.bg}` }}>
                 {user.avatar ? (
                   <Image src={user.avatar} alt={user.displayName} width={96} height={96} className="object-cover" />
                 ) : (
-                  <span className="text-3xl font-bold text-pink-500">
+                  <span className="text-3xl font-bold" style={{ color: theme.primary }}>
                     {user.displayName.charAt(0)}
                   </span>
                 )}
@@ -85,38 +120,37 @@ export default function ProfileContent({ user, username }: { user: User; usernam
             </div>
           </div>
 
-          {/* Name & Bio */}
-          <h1 className="text-2xl font-bold text-pink-900 mb-1 font-display">
+          <h1 className="text-2xl font-bold mb-1 font-display" style={{ color: theme.secondary }}>
             {user.displayName}
           </h1>
-          <p className="text-pink-600 text-sm mb-4">@{username}</p>
-          <p className="text-pink-700 max-w-xs mx-auto">{user.bio}</p>
+          <p className="text-sm mb-4" style={{ color: theme.primary }}>@{user.username}</p>
+          <p className="max-w-xs mx-auto" style={{ color: theme.secondary }}>{user.bio}</p>
 
-          {/* Social Icons */}
-          <div className="flex items-center justify-center gap-4 mt-4">
-            {user.socials.twitter && (
-              <a href={user.socials.twitter} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/50 flex items-center justify-center text-pink-500 hover:bg-white hover:text-pink-600 transition-all hover:scale-110">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                </svg>
-              </a>
-            )}
-            {user.socials.instagram && (
-              <a href={user.socials.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/50 flex items-center justify-center text-pink-500 hover:bg-white hover:text-pink-600 transition-all hover:scale-110">
-                {icons.instagram}
-              </a>
-            )}
-            {user.socials.tiktok && (
-              <a href={user.socials.tiktok} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/50 flex items-center justify-center text-pink-500 hover:bg-white hover:text-pink-600 transition-all hover:scale-110">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
-                </svg>
-              </a>
-            )}
-          </div>
+          {user.showSocials && Object.keys(user.socials).length > 0 && (
+            <div className="flex items-center justify-center gap-4 mt-4">
+              {user.socials.twitter && (
+                <a href={user.socials.twitter} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/50 flex items-center justify-center transition-all hover:scale-110" style={{ color: theme.primary }}>
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                </a>
+              )}
+              {user.socials.instagram && (
+                <a href={user.socials.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/50 flex items-center justify-center transition-all hover:scale-110" style={{ color: theme.primary }}>
+                  {icons.instagram}
+                </a>
+              )}
+              {user.socials.tiktok && (
+                <a href={user.socials.tiktok} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/50 flex items-center justify-center transition-all hover:scale-110" style={{ color: theme.primary }}>
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                  </svg>
+                </a>
+              )}
+            </div>
+          )}
         </div>
 
-        {/* Links */}
         <div className="space-y-3">
           {user.links.map((link) => (
             <a
@@ -124,14 +158,18 @@ export default function ProfileContent({ user, username }: { user: User; usernam
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full glass rounded-2xl p-4 link-card group"
+              onClick={() => handleLinkClick(link.title, link.url)}
+              className={`block w-full bg-white/80 backdrop-blur-sm p-4 ${btnStyle} transition-all hover:scale-[1.02] hover:shadow-lg group`}
             >
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-400 to-pink-500 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                <div
+                  className={`w-10 h-10 ${btnStyle} flex items-center justify-center text-white group-hover:scale-110 transition-transform`}
+                  style={{ background: `linear-gradient(to bottom right, ${theme.primary}, ${theme.secondary})` }}
+                >
                   {icons[link.icon] || icons.heart}
                 </div>
-                <span className="flex-1 font-medium text-pink-900">{link.title}</span>
-                <svg className="w-5 h-5 text-pink-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <span className="flex-1 font-medium" style={{ color: theme.secondary }}>{link.title}</span>
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" style={{ color: theme.primary }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </div>
@@ -139,11 +177,16 @@ export default function ProfileContent({ user, username }: { user: User; usernam
           ))}
         </div>
 
-        {/* Footer */}
+        {user.links.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-sm" style={{ color: theme.primary }}>no links yet ♡</p>
+          </div>
+        )}
+
         <div className="mt-12 text-center">
-          <Link href="/" className="inline-flex items-center gap-2 text-pink-500 hover:text-pink-700 transition-colors">
+          <Link href="/" className="inline-flex items-center gap-2 transition-colors" style={{ color: theme.primary }}>
             <span className="text-sm">Made with</span>
-            <span className="font-semibold gradient-text font-display">sweetheart</span>
+            <span className="font-semibold font-display" style={{ color: theme.secondary }}>sweetheart</span>
           </Link>
         </div>
       </div>
