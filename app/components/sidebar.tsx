@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { signOut } from "@/lib/client";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -20,8 +21,11 @@ export function Sidebar({ active, username }: SidebarProps) {
 
   return (
     <div className="fixed left-0 top-0 h-full w-56 bg-[#fdf5f3] dark:bg-[#1a1a1a] border-r border-gray-200 dark:border-gray-800 p-6 hidden lg:flex flex-col transition-colors">
-      <Link href="/" className="text-lg font-bold text-[#1a1a1a] dark:text-white mb-8">
-        sweethe<span className="text-pink-500">.</span>art
+      <Link href="/" className="flex items-center gap-2 mb-8">
+        <Image src="/sweethearticon.png" alt="sweetheart" width={24} height={24} className="rounded" />
+        <span className="text-lg font-bold text-[#1a1a1a] dark:text-white">
+          sweethe<span className="text-pink-500">.</span>art
+        </span>
       </Link>
 
       <nav className="space-y-1 flex-1">

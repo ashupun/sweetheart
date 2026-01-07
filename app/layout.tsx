@@ -49,10 +49,15 @@ export const metadata: Metadata = {
     creator: "@ashubun",
   },
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    icon: "/sweethearticon.png",
+    shortcut: "/sweethearticon.png",
+    apple: "/sweethearticon.png",
   },
   manifest: "/manifest.json",
+  themeColor: "#ec4899",
+  other: {
+    "msapplication-TileColor": "#ec4899",
+  },
 };
 
 const themeScript = `

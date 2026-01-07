@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "./components/ThemeToggle";
 import { useSession } from "@/lib/client";
@@ -34,8 +35,11 @@ export default function Home() {
 
       <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4">
         <div className="grid grid-cols-3 items-center max-w-6xl mx-auto text-xs tracking-wide">
-          <div className="flex items-center gap-6">
-            <span className="font-medium">sweethe.art</span>
+          <div className="flex items-center gap-4">
+            <Link href="/" className="flex items-center gap-2">
+              <Image src="/sweethearticon.png" alt="sweetheart" width={20} height={20} className="rounded" />
+              <span className="font-medium hidden sm:inline">sweethe.art</span>
+            </Link>
             <Link href="/pricing" className="text-gray-500 hover:text-pink-500 transition-colors hidden sm:block">pricing</Link>
             <Link href="/docs" className="text-gray-500 hover:text-pink-500 transition-colors hidden sm:block">docs</Link>
           </div>

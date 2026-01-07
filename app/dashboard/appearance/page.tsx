@@ -86,11 +86,10 @@ export default function AppearancePage() {
                 <button
                   key={theme.id}
                   onClick={() => setSelectedTheme(theme.id)}
-                  className={`flex items-center gap-2 px-3 py-2 border transition-colors ${
-                    selectedTheme === theme.id
+                  className={`flex items-center gap-2 px-3 py-2 border transition-colors ${selectedTheme === theme.id
                       ? "border-pink-500 text-pink-500"
                       : "border-gray-200 dark:border-gray-800 text-gray-500 hover:border-gray-300"
-                  }`}
+                    }`}
                 >
                   <span
                     className="w-3 h-3 rounded-full"
@@ -117,14 +116,14 @@ export default function AppearancePage() {
                   <p className="text-sm text-[#1a1a1a] dark:text-white">custom background <span className="text-[10px] text-pink-500">pro</span></p>
                   <p className="text-xs text-gray-400">upload your own image</p>
                 </div>
-                <Toggle enabled={false} onChange={() => {}} />
+                <Toggle enabled={false} onChange={() => { }} />
               </div>
               <div className="flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-800 opacity-40">
                 <div>
                   <p className="text-sm text-[#1a1a1a] dark:text-white">profile music <span className="text-[10px] text-pink-500">pro</span></p>
                   <p className="text-xs text-gray-400">add background music</p>
                 </div>
-                <Toggle enabled={false} onChange={() => {}} />
+                <Toggle enabled={false} onChange={() => { }} />
               </div>
             </div>
           </section>
