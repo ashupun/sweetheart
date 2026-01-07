@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "./components/ThemeToggle";
+import { useSession } from "@/lib/client";
 
 export default function Home() {
+  const { data: session } = useSession();
   const [entered, setEntered] = useState(false);
   const [typed, setTyped] = useState("");
   const fullText = "sweethe.art/you";
@@ -36,11 +38,18 @@ export default function Home() {
             <span className="font-medium">Sweetheart Inc.</span>
             <span className="text-gray-400 dark:text-gray-600">2025</span>
           </div>
+          <ThemeToggle />
           <div className="flex items-center gap-6">
-            <ThemeToggle />
-            <Link href="/login" className="hover:text-pink-500 transition-colors">login ↗</Link>
-            <Link href="/signup" className="hover:text-pink-500 transition-colors">register ↗</Link>
-            <span className="text-pink-500">@sweetheart</span>
+            {session?.user ? (
+              <Link href="/dashboard" className="text-pink-500 hover:text-pink-400 transition-colors">
+                @{session.user.name} ↗
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" className="hover:text-pink-500 transition-colors">login ↗</Link>
+                <Link href="/signup" className="hover:text-pink-500 transition-colors">register ↗</Link>
+              </>
+            )}
           </div>
         </div>
       </nav>
@@ -73,10 +82,10 @@ export default function Home() {
                 {typed === fullText && (
                   <div className="animate-fade-in">
                     <Link
-                      href="/signup"
+                      href={session?.user ? "/dashboard" : "/signup"}
                       className="inline-flex items-center gap-2 text-sm hover:text-pink-500 transition-colors"
                     >
-                      claim yours ↗
+                      {session?.user ? "go to dashboard ↗" : "claim yours ↗"}
                     </Link>
                   </div>
                 )}

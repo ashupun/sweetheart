@@ -1,9 +1,13 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
-import { ThemeToggle } from "../../components/ThemeToggle";
+import { useState, useEffect } from "react";
 import { Sidebar } from "../../components/sidebar";
+import { Header } from "../../components/header";
+import { Toggle } from "../../components/toggle";
+import { Loading } from "../../components/loading";
+import { DashboardLayout } from "../../components/layout";
+import { getProfileData, updateProfile } from "../actions";
+import type { Profile } from "@/lib/types";
 
 const themes = [
   { id: "pink", name: "pink dreams", colors: ["#ec4899", "#db2777", "#fce7f3"] },
@@ -26,36 +30,50 @@ const fontOptions = [
 ];
 
 export default function AppearancePage() {
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [selectedTheme, setSelectedTheme] = useState("pink");
   const [selectedButton, setSelectedButton] = useState("rounded");
   const [selectedFont, setSelectedFont] = useState("mono");
   const [showSocialIcons, setShowSocialIcons] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    async function load() {
+      const data = await getProfileData();
+      setProfile(data);
+      if (data) {
+        setSelectedTheme(data.theme || "pink");
+        setSelectedButton(data.buttonStyle || "rounded");
+        setSelectedFont(data.font || "mono");
+        setShowSocialIcons(data.showSocials ?? true);
+      }
+      setLoading(false);
+    }
+    load();
+  }, []);
+
+  const handleSave = async () => {
+    setSaving(true);
+    await updateProfile({
+      theme: selectedTheme,
+      buttonStyle: selectedButton,
+      font: selectedFont,
+      showSocials: showSocialIcons,
+    });
+    setSaving(false);
+  };
 
   const currentTheme = themes.find(t => t.id === selectedTheme);
   const currentButton = buttonStyles.find(s => s.id === selectedButton);
 
+  if (loading) return <Loading />;
+
   return (
-    <div className="min-h-screen bg-[#fdf5f3] dark:bg-[#1a1a1a] font-mono transition-colors">
-      <Sidebar active="appearance" />
-
+    <DashboardLayout>
+      <Sidebar active="appearance" username={profile?.username} />
       <div className="lg:ml-56 min-h-screen">
-        <header className="sticky top-0 z-20 bg-[#fdf5f3]/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 px-6 py-4">
-          <div className="flex items-center justify-between max-w-4xl mx-auto">
-            <div className="lg:hidden">
-              <Link href="/" className="text-lg font-bold text-[#1a1a1a] dark:text-white">
-                sweethe<span className="text-pink-500">.</span>art
-              </Link>
-            </div>
-            <h1 className="text-sm text-gray-500 dark:text-gray-400 hidden lg:block">appearance</h1>
-            <div className="flex items-center gap-4">
-              <ThemeToggle />
-              <a href="/sakura" target="_blank" className="text-xs text-pink-500 hover:text-pink-400 transition-colors">
-                preview ↗
-              </a>
-            </div>
-          </div>
-        </header>
-
+        <Header title="appearance" username={profile?.username} maxWidth="4xl" />
         <main className="p-6">
           <div className="max-w-4xl mx-auto">
             <div className="grid lg:grid-cols-5 gap-6">
@@ -75,11 +93,7 @@ export default function AppearancePage() {
                       >
                         <div className="flex gap-1 mb-2">
                           {theme.colors.map((color, i) => (
-                            <div
-                              key={i}
-                              className="w-5 h-5 rounded-full"
-                              style={{ backgroundColor: color }}
-                            />
+                            <div key={i} className="w-5 h-5 rounded-full" style={{ backgroundColor: color }} />
                           ))}
                         </div>
                         <p className="text-xs text-gray-600 dark:text-gray-400">{theme.name}</p>
@@ -135,17 +149,16 @@ export default function AppearancePage() {
                       <p className="text-sm text-[#1a1a1a] dark:text-white">social icons</p>
                       <p className="text-xs text-gray-400 dark:text-gray-500">show icons below your bio</p>
                     </div>
-                    <button
-                      onClick={() => setShowSocialIcons(!showSocialIcons)}
-                      className={`w-10 h-5 rounded-full transition-colors relative ${showSocialIcons ? "bg-pink-500" : "bg-gray-300 dark:bg-gray-600"}`}
-                    >
-                      <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-all ${showSocialIcons ? "left-5" : "left-0.5"}`} />
-                    </button>
+                    <Toggle enabled={showSocialIcons} onChange={setShowSocialIcons} />
                   </div>
                 </div>
 
-                <button className="w-full py-3 bg-pink-500 text-white text-sm hover:bg-pink-600 transition-colors rounded">
-                  save changes
+                <button
+                  onClick={handleSave}
+                  disabled={saving}
+                  className="w-full py-3 bg-pink-500 text-white text-sm hover:bg-pink-600 transition-colors rounded disabled:opacity-50"
+                >
+                  {saving ? "saving..." : "save changes"}
                 </button>
               </div>
 
@@ -162,16 +175,16 @@ export default function AppearancePage() {
                           className="w-16 h-16 mx-auto mb-3 rounded-full flex items-center justify-center text-white text-xl font-bold"
                           style={{ backgroundColor: currentTheme?.colors[0] }}
                         >
-                          S
+                          {profile?.displayName?.charAt(0) || "?"}
                         </div>
                         <h4
                           className={`text-lg font-bold mb-1 ${selectedFont === "sans" ? "font-sans" : "font-mono"}`}
                           style={{ color: currentTheme?.colors[1] }}
                         >
-                          sakura
+                          {profile?.displayName || "you"}
                         </h4>
                         <p className="text-xs mb-4" style={{ color: currentTheme?.colors[0] }}>
-                          gamer girl & pink enthusiast
+                          {profile?.bio || "your bio here"}
                         </p>
 
                         {showSocialIcons && (
@@ -188,10 +201,7 @@ export default function AppearancePage() {
 
                         <div className="space-y-2">
                           {["my twitch", "youtube", "discord"].map((link) => (
-                            <div
-                              key={link}
-                              className={`bg-white/80 p-3 ${currentButton?.class}`}
-                            >
+                            <div key={link} className={`bg-white/80 p-3 ${currentButton?.class}`}>
                               <span
                                 className={`text-sm ${selectedFont === "sans" ? "font-sans" : "font-mono"}`}
                                 style={{ color: currentTheme?.colors[1] }}
@@ -210,6 +220,6 @@ export default function AppearancePage() {
           </div>
         </main>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

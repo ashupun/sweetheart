@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { signOut } from "@/lib/client";
 
 interface SidebarProps {
   active: "links" | "appearance" | "analytics" | "settings";
+  username?: string;
 }
 
-export function Sidebar({ active }: SidebarProps) {
+export function Sidebar({ active, username }: SidebarProps) {
   const navItems = [
     { id: "links", href: "/dashboard", label: "links", icon: "M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" },
     { id: "appearance", href: "/dashboard/appearance", label: "appearance", icon: "M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" },
@@ -39,11 +41,21 @@ export function Sidebar({ active }: SidebarProps) {
         ))}
       </nav>
 
-      <div className="pt-4 border-t border-gray-200 dark:border-gray-800">
-        <p className="text-xs text-gray-400 dark:text-gray-600 mb-1">your page</p>
-        <a href="/sakura" target="_blank" className="text-sm text-pink-500 hover:text-pink-400 transition-colors">
-          sweethe.art/sakura ↗
-        </a>
+      <div className="pt-4 border-t border-gray-200 dark:border-gray-800 space-y-3">
+        {username && (
+          <div>
+            <p className="text-xs text-gray-400 dark:text-gray-600 mb-1">your page</p>
+            <a href={`/${username}`} target="_blank" className="text-sm text-pink-500 hover:text-pink-400 transition-colors">
+              sweethe.art/{username} ↗
+            </a>
+          </div>
+        )}
+        <button
+          onClick={() => signOut({ fetchOptions: { onSuccess: () => { window.location.href = "/"; } } })}
+          className="text-xs text-gray-400 dark:text-gray-600 hover:text-pink-500 transition-colors"
+        >
+          sign out
+        </button>
       </div>
     </div>
   );

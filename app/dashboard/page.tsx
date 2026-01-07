@@ -1,65 +1,60 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
-import { ThemeToggle } from "../components/ThemeToggle";
+import { useState, useEffect } from "react";
 import { Sidebar } from "../components/sidebar";
-
-interface LinkItem {
-  id: number;
-  title: string;
-  url: string;
-  enabled: boolean;
-}
+import { Header } from "../components/header";
+import { Toggle } from "../components/toggle";
+import { Loading } from "../components/loading";
+import { DashboardLayout } from "../components/layout";
+import { getLinks, addLink, deleteLink, toggleLink, getProfileData } from "./actions";
+import type { Link as LinkType, Profile } from "@/lib/types";
 
 export default function Dashboard() {
-  const [links, setLinks] = useState<LinkItem[]>([
-    { id: 1, title: "my twitch", url: "https://twitch.tv/myhandle", enabled: true },
-    { id: 2, title: "youtube channel", url: "https://youtube.com/@mychannel", enabled: true },
-    { id: 3, title: "discord server", url: "https://discord.gg/myserver", enabled: false },
-  ]);
-
+  const [links, setLinks] = useState<LinkType[]>([]);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [newLink, setNewLink] = useState({ title: "", url: "" });
   const [isAdding, setIsAdding] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const addLink = () => {
+  useEffect(() => {
+    async function load() {
+      const [linksData, profileData] = await Promise.all([getLinks(), getProfileData()]);
+      setLinks(linksData);
+      setProfile(profileData);
+      setLoading(false);
+    }
+    load();
+  }, []);
+
+  const handleAddLink = async () => {
     if (newLink.title && newLink.url) {
-      setLinks([...links, { id: Date.now(), title: newLink.title, url: newLink.url, enabled: true }]);
-      setNewLink({ title: "", url: "" });
-      setIsAdding(false);
+      const result = await addLink(newLink.title, newLink.url);
+      if (result.success) {
+        const updatedLinks = await getLinks();
+        setLinks(updatedLinks);
+        setNewLink({ title: "", url: "" });
+        setIsAdding(false);
+      }
     }
   };
 
-  const deleteLink = (id: number) => {
+  const handleDeleteLink = async (id: string) => {
+    await deleteLink(id);
     setLinks(links.filter(link => link.id !== id));
   };
 
-  const toggleLink = (id: number) => {
-    setLinks(links.map(link => link.id === id ? { ...link, enabled: !link.enabled } : link));
+  const handleToggleLink = async (id: string, enabled: boolean) => {
+    await toggleLink(id, !enabled);
+    setLinks(links.map(link => link.id === id ? { ...link, enabled: !enabled } : link));
   };
 
+  if (loading) return <Loading />;
+
   return (
-    <div className="min-h-screen bg-[#fdf5f3] dark:bg-[#1a1a1a] font-mono transition-colors">
-      <Sidebar active="links" />
-
+    <DashboardLayout>
+      <Sidebar active="links" username={profile?.username} />
       <div className="lg:ml-56 min-h-screen">
-        <header className="sticky top-0 z-20 bg-[#fdf5f3]/80 dark:bg-[#1a1a1a]/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 px-6 py-4">
-          <div className="flex items-center justify-between max-w-2xl mx-auto">
-            <div className="lg:hidden">
-              <Link href="/" className="text-lg font-bold text-[#1a1a1a] dark:text-white">
-                sweethe<span className="text-pink-500">.</span>art
-              </Link>
-            </div>
-            <h1 className="text-sm text-gray-500 dark:text-gray-400 hidden lg:block">links</h1>
-            <div className="flex items-center gap-4">
-              <ThemeToggle />
-              <a href="/sakura" target="_blank" className="text-xs text-pink-500 hover:text-pink-400 transition-colors">
-                preview ↗
-              </a>
-            </div>
-          </div>
-        </header>
-
+        <Header title="links" username={profile?.username} />
         <main className="p-6">
           <div className="max-w-2xl mx-auto">
             {!isAdding ? (
@@ -88,7 +83,7 @@ export default function Dashboard() {
                   />
                   <div className="flex gap-2 pt-2">
                     <button
-                      onClick={addLink}
+                      onClick={handleAddLink}
                       className="flex-1 py-2 bg-pink-500 text-white text-sm hover:bg-pink-600 transition-colors rounded"
                     >
                       add link
@@ -127,7 +122,7 @@ export default function Dashboard() {
                         </svg>
                       </button>
                       <button
-                        onClick={() => deleteLink(link.id)}
+                        onClick={() => handleDeleteLink(link.id)}
                         className="p-1.5 text-gray-400 hover:text-red-500 transition-colors"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -135,12 +130,7 @@ export default function Dashboard() {
                         </svg>
                       </button>
                     </div>
-                    <button
-                      onClick={() => toggleLink(link.id)}
-                      className={`w-10 h-5 rounded-full transition-colors relative ${link.enabled ? "bg-pink-500" : "bg-gray-300 dark:bg-gray-600"}`}
-                    >
-                      <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-all ${link.enabled ? "left-5" : "left-0.5"}`} />
-                    </button>
+                    <Toggle enabled={link.enabled} onChange={() => handleToggleLink(link.id, link.enabled)} />
                   </div>
                 </div>
               ))}
@@ -155,6 +145,6 @@ export default function Dashboard() {
           </div>
         </main>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }
