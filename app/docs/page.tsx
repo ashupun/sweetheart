@@ -559,14 +559,14 @@ join our discord and open a support ticket with:
 
 const allItems = sections.flatMap(s => s.items.map(item => ({ ...item, section: s.title })));
 
-function SidebarSection({ 
-  section, 
-  activeDoc, 
+function SidebarSection({
+  section,
+  activeDoc,
   onSelect,
-  defaultOpen = false 
-}: { 
-  section: Section; 
-  activeDoc: string; 
+  defaultOpen = false
+}: {
+  section: Section;
+  activeDoc: string;
   onSelect: (id: string) => void;
   defaultOpen?: boolean;
 }) {
@@ -579,10 +579,10 @@ function SidebarSection({
         onClick={() => setOpen(!open)}
         className="w-full flex items-center gap-2 py-2 text-sm text-[#1a1a1a] dark:text-white hover:text-pink-500 dark:hover:text-pink-500 transition-colors"
       >
-        <svg 
-          className={`w-3 h-3 text-gray-400 transition-transform ${open ? "rotate-90" : ""}`} 
-          fill="none" 
-          stroke="currentColor" 
+        <svg
+          className={`w-3 h-3 text-gray-400 transition-transform ${open ? "rotate-90" : ""}`}
+          fill="none"
+          stroke="currentColor"
           viewBox="0 0 24 24"
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -595,11 +595,10 @@ function SidebarSection({
             <button
               key={item.id}
               onClick={() => onSelect(item.id)}
-              className={`w-full text-left py-1.5 text-sm transition-colors flex items-center gap-2 ${
-                activeDoc === item.id
+              className={`w-full text-left py-1.5 text-sm transition-colors flex items-center gap-2 ${activeDoc === item.id
                   ? "text-pink-500"
                   : "text-gray-500 hover:text-[#1a1a1a] dark:hover:text-white"
-              }`}
+                }`}
             >
               {item.title}
               {item.pro && (

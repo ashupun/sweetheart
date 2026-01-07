@@ -2,6 +2,16 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+::selection {
+  background-color: #fce7f3;
+  color: #1a1a1a;
+}
+
+.dark ::selection {
+  background-color: rgba(236, 72, 153, 0.3);
+  color: #ffffff;
+}
+
 :root {
   --background: #09090b;
   --foreground: #fafafa;
