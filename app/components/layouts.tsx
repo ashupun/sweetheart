@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { AnimatedLines, AnimatedCircles } from "./animated";
+import Image from "next/image";
+import { ThemeToggle } from "./ThemeToggle";
 
 interface AuthLayoutProps {
     children: React.ReactNode;
@@ -9,33 +10,19 @@ interface AuthLayoutProps {
 
 export function AuthLayout({ children }: AuthLayoutProps) {
     return (
-        <div className="min-h-screen flex font-mono">
-            <div className="hidden lg:flex lg:w-1/2 bg-[#fdf5f3] dark:bg-[#1a1a1a] relative overflow-hidden transition-colors">
-                <div className="absolute inset-0">
-                    <div className="grid-pattern absolute inset-0 opacity-20" />
-                    <AnimatedLines />
-                    <AnimatedCircles />
-                </div>
-
-                <div className="relative z-10 flex flex-col justify-between p-12 w-full">
-                    <Link href="/" className="text-xs text-gray-500 dark:text-gray-500 hover:text-pink-500 transition-colors">
-                        ← back
-                    </Link>
-                    <div />
-                    <div className="text-xs text-gray-500 dark:text-gray-600">
-                        <span className="text-pink-500">sweethe.art</span> — the link-in-bio for girls who code
-                    </div>
-                </div>
-            </div>
-
-            <div className="w-full lg:w-1/2 bg-[#fdf5f3] dark:bg-[#1a1a1a] flex items-center justify-center p-8 relative transition-colors">
-                <div className="lg:hidden absolute top-6 left-6">
-                    <Link href="/" className="text-xs text-gray-500 hover:text-pink-500 transition-colors">
-                        ← back
-                    </Link>
-                </div>
+        <div className="min-h-screen bg-[#fdf5f3] dark:bg-[#1a1a1a] font-mono transition-colors">
+            <nav className="h-[57px] px-6 flex items-center justify-between">
+                <Link href="/" className="flex items-center gap-2">
+                    <Image src="/sweethearticon.png" alt="" width={18} height={18} />
+                    <span className="text-sm font-medium text-[#1a1a1a] dark:text-white">
+                        sweethe<span className="text-pink-500">.</span>art
+                    </span>
+                </Link>
+                <ThemeToggle />
+            </nav>
+            <main className="flex items-center justify-center px-6 py-12 min-h-[calc(100vh-57px)]">
                 {children}
-            </div>
+            </main>
         </div>
     );
 }
@@ -51,4 +38,3 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
     );
 }
-
