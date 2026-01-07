@@ -1,42 +1,47 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { verifyAdmin, getWaitlistEmails, type WaitlistEntry } from "./actions";
 
+function hasToken() {
+    if (typeof window === "undefined") return false;
+    return !!sessionStorage.getItem("admin-token");
+}
+
 export default function AdminPage() {
     const [authenticated, setAuthenticated] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(hasToken);
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [emails, setEmails] = useState<WaitlistEntry[]>([]);
     const [copied, setCopied] = useState(false);
     const router = useRouter();
 
-    useEffect(() => {
-        const token = sessionStorage.getItem("admin-token");
-        if (token) {
-            verifyAdmin(token).then((valid) => {
-                if (valid) {
-                    setAuthenticated(true);
-                    loadEmails();
-                }
-                setLoading(false);
-            });
-        } else {
-            setLoading(false);
-        }
-    }, []);
-
-    const loadEmails = async () => {
-        const token = sessionStorage.getItem("admin-token");
-        if (!token) return;
+    const loadEmails = useCallback(async (token: string) => {
         const data = await getWaitlistEmails(token);
         if (data) setEmails(data);
-    };
+    }, []);
+
+    useEffect(() => {
+        const token = sessionStorage.getItem("admin-token");
+        if (!token) return;
+
+        let mounted = true;
+        verifyAdmin(token).then((valid) => {
+            if (!mounted) return;
+            if (valid) {
+                setAuthenticated(true);
+                loadEmails(token);
+            }
+            setLoading(false);
+        });
+        
+        return () => { mounted = false; };
+    }, [loadEmails]);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -47,7 +52,7 @@ export default function AdminPage() {
         if (valid) {
             sessionStorage.setItem("admin-token", password);
             setAuthenticated(true);
-            loadEmails();
+            loadEmails(password);
         } else {
             setError("invalid password");
         }
@@ -176,7 +181,7 @@ export default function AdminPage() {
                                     <span>joined</span>
                                 </div>
                                 <div className="divide-y divide-gray-100 dark:divide-gray-800">
-                                    {emails.map((entry, i) => (
+                                    {emails.map((entry) => (
                                         <div key={entry.id} className="grid grid-cols-[1fr_auto] gap-4 px-4 py-3 text-sm">
                                             <span className="text-[#1a1a1a] dark:text-white truncate">{entry.email}</span>
                                             <span className="text-gray-400 text-xs">
@@ -193,4 +198,3 @@ export default function AdminPage() {
         </div>
     );
 }
-

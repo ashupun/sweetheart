@@ -10,14 +10,22 @@ interface SidebarProps {
   username?: string;
 }
 
-export function Sidebar({ active, username }: SidebarProps) {
-  const [collapsed, setCollapsed] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+const navItems = [
+  { id: "links", href: "/dashboard", label: "links" },
+  { id: "appearance", href: "/dashboard/appearance", label: "appearance" },
+  { id: "templates", href: "/dashboard/templates", label: "templates" },
+  { id: "analytics", href: "/dashboard/analytics", label: "analytics" },
+  { id: "settings", href: "/dashboard/settings", label: "settings" },
+];
 
-  useEffect(() => {
-    const saved = localStorage.getItem("sidebar-collapsed");
-    if (saved === "true") setCollapsed(true);
-  }, []);
+function getInitialCollapsed() {
+  if (typeof window === "undefined") return false;
+  return localStorage.getItem("sidebar-collapsed") === "true";
+}
+
+export function Sidebar({ active, username }: SidebarProps) {
+  const [collapsed, setCollapsed] = useState(getInitialCollapsed);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const toggleCollapsed = () => {
     const newState = !collapsed;
@@ -26,51 +34,9 @@ export function Sidebar({ active, username }: SidebarProps) {
     window.dispatchEvent(new Event("storage"));
   };
 
-  const navItems = [
-    { id: "links", href: "/dashboard", label: "links" },
-    { id: "appearance", href: "/dashboard/appearance", label: "appearance" },
-    { id: "templates", href: "/dashboard/templates", label: "templates" },
-    { id: "analytics", href: "/dashboard/analytics", label: "analytics" },
-    { id: "settings", href: "/dashboard/settings", label: "settings" },
-  ];
-
-  const NavContent = ({ mobile = false }: { mobile?: boolean }) => (
-    <nav className="flex-1 py-6 px-4">
-      {navItems.map((item) => (
-        <Link
-          key={item.id}
-          href={item.href}
-          onClick={() => mobile && setMobileOpen(false)}
-          className={`flex items-center h-9 px-2 text-sm transition-colors ${active === item.id
-              ? "text-pink-500 font-medium"
-              : "text-gray-400 hover:text-[#1a1a1a] dark:hover:text-white"
-            }`}
-        >
-          {(!collapsed || mobile) ? item.label : item.label.charAt(0).toUpperCase()}
-        </Link>
-      ))}
-    </nav>
-  );
-
-  const Footer = ({ mobile = false }: { mobile?: boolean }) => (
-    <div className="px-4 py-4 border-t border-gray-200 dark:border-gray-800">
-      {username && (!collapsed || mobile) && (
-        <a
-          href={`/${username}`}
-          target="_blank"
-          className="block text-xs text-gray-400 hover:text-pink-500 transition-colors mb-3 truncate"
-        >
-          sweethe.art/{username} ↗
-        </a>
-      )}
-      <button
-        onClick={() => signOut({ fetchOptions: { onSuccess: () => { window.location.href = "/"; } } })}
-        className="text-xs text-gray-400 hover:text-pink-500 transition-colors"
-      >
-        {(!collapsed || mobile) ? "sign out" : "→"}
-      </button>
-    </div>
-  );
+  const handleSignOut = () => {
+    signOut({ fetchOptions: { onSuccess: () => { window.location.href = "/"; } } });
+  };
 
   return (
     <>
@@ -103,8 +69,38 @@ export function Sidebar({ active, username }: SidebarProps) {
                 </svg>
               </button>
             </div>
-            <NavContent mobile />
-            <Footer mobile />
+            <nav className="flex-1 py-6 px-4">
+              {navItems.map((item) => (
+                <Link
+                  key={item.id}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`flex items-center h-9 px-2 text-sm transition-colors ${active === item.id
+                    ? "text-pink-500 font-medium"
+                    : "text-gray-400 hover:text-[#1a1a1a] dark:hover:text-white"
+                    }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+            <div className="px-4 py-4 border-t border-gray-200 dark:border-gray-800">
+              {username && (
+                <a
+                  href={`/${username}`}
+                  target="_blank"
+                  className="block text-xs text-gray-400 hover:text-pink-500 transition-colors mb-3 truncate"
+                >
+                  sweethe.art/{username} ↗
+                </a>
+              )}
+              <button
+                onClick={handleSignOut}
+                className="text-xs text-gray-400 hover:text-pink-500 transition-colors"
+              >
+                sign out
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -135,15 +131,44 @@ export function Sidebar({ active, username }: SidebarProps) {
             </svg>
           </button>
         </div>
-        <NavContent />
-        <Footer />
+        <nav className="flex-1 py-6 px-4">
+          {navItems.map((item) => (
+            <Link
+              key={item.id}
+              href={item.href}
+              className={`flex items-center h-9 px-2 text-sm transition-colors ${active === item.id
+                ? "text-pink-500 font-medium"
+                : "text-gray-400 hover:text-[#1a1a1a] dark:hover:text-white"
+                }`}
+            >
+              {collapsed ? item.label.charAt(0).toUpperCase() : item.label}
+            </Link>
+          ))}
+        </nav>
+        <div className="px-4 py-4 border-t border-gray-200 dark:border-gray-800">
+          {username && !collapsed && (
+            <a
+              href={`/${username}`}
+              target="_blank"
+              className="block text-xs text-gray-400 hover:text-pink-500 transition-colors mb-3 truncate"
+            >
+              sweethe.art/{username} ↗
+            </a>
+          )}
+          <button
+            onClick={handleSignOut}
+            className="text-xs text-gray-400 hover:text-pink-500 transition-colors"
+          >
+            {collapsed ? "→" : "sign out"}
+          </button>
+        </div>
       </div>
     </>
   );
 }
 
 export function useSidebarWidth() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(getInitialCollapsed);
 
   useEffect(() => {
     const checkCollapsed = () => {
@@ -151,7 +176,6 @@ export function useSidebarWidth() {
       setCollapsed(saved === "true");
     };
 
-    checkCollapsed();
     window.addEventListener("storage", checkCollapsed);
     return () => window.removeEventListener("storage", checkCollapsed);
   }, []);
